@@ -4,87 +4,87 @@
   <meta charset="utf-8" />
   <title>BTX.ONE – Neon Register</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <style>
-    /* ---------- FONT & BASE ---------- */
-    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
     body{
       min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      background:radial-gradient(circle at top,#1d2b64,#090a0f 60%);
+      background:radial-gradient(circle at top,#1d2b64,#020617 65%);
       color:#e5f0ff;
     }
-    a{color:#67e8f9;text-decoration:none}
+    a{color:#38bdf8;text-decoration:none}
 
-    /* ---------- CONTAINER ---------- */
-    .reg2-wrap{
+    .rn-wrap{
       width:100%;
-      max-width:420px;
-      padding:20px;
+      max-width:430px;
+      padding:18px;
     }
-    .reg2-card{
-      background:linear-gradient(145deg,rgba(15,23,42,.95),rgba(30,64,175,.9));
-      border-radius:24px;
-      padding:24px 22px 20px;
-      box-shadow:
-        0 0 0 1px rgba(74,222,128,.5),
-        0 24px 60px rgba(15,23,42,.9);
+    .rn-card{
       position:relative;
+      border-radius:26px;
+      padding:26px 22px 20px;
+      background:linear-gradient(145deg,rgba(12,20,46,.98),rgba(15,23,42,.96));
+      box-shadow:
+        0 0 0 2px rgba(163,230,53,.7),
+        0 18px 48px rgba(0,0,0,.9);
       overflow:hidden;
     }
-    .reg2-glow{
+    .rn-glow{
       position:absolute;
       inset:-80px;
-      background:radial-gradient(circle at 0 0,rgba(74,222,128,.22),transparent 55%),
-                 radial-gradient(circle at 100% 100%,rgba(56,189,248,.18),transparent 55%);
+      background:
+        radial-gradient(circle at 0 0,rgba(163,230,53,.35),transparent 55%),
+        radial-gradient(circle at 100% 100%,rgba(45,212,191,.3),transparent 55%);
       opacity:.9;
       pointer-events:none;
     }
-    .reg2-inner{
-      position:relative;
-      z-index:1;
-    }
+    .rn-inner{position:relative;z-index:1;}
 
-    /* ---------- HEADER ---------- */
-    .reg2-title{
+    .rn-title{
       text-align:center;
-      margin-bottom:18px;
+      margin-bottom:14px;
     }
-    .reg2-title h1{
+    .rn-title h1{
       font-size:22px;
-      letter-spacing:.08em;
+      letter-spacing:.14em;
       text-transform:uppercase;
     }
-    .reg2-title p{
+    .rn-title p{
       font-size:12px;
       color:#9ca3af;
       margin-top:4px;
     }
 
-    /* ---------- FORM ---------- */
-    .reg2-form{
+    .rn-form{
       display:flex;
       flex-direction:column;
       gap:10px;
     }
-    .reg2-group label{
+    .rn-group label{
       font-size:12px;
       display:block;
       margin-bottom:4px;
-      color:#cbd5f5;
+      color:#dbeafe;
     }
-    .reg2-field{
+    .rn-field{
       position:relative;
-      border-radius:16px;
-      padding:10px 12px;
-      background:linear-gradient(135deg,rgba(15,23,42,.95),rgba(15,23,42,.92));
+      border-radius:18px;
+      padding:10px 14px;
+      background:rgba(15,23,42,.96);
       box-shadow:
-        0 0 0 1px rgba(132,204,22,.7),
-        0 0 12px rgba(132,204,22,.5) inset;
+        0 0 0 2px #a3e635,
+        0 0 18px rgba(163,230,53,.55);
     }
-    .reg2-field input,
-    .reg2-field select{
+    .rn-field input,
+    .rn-field select{
       width:100%;
       border:none;
       outline:none;
@@ -92,28 +92,28 @@
       color:#e5f0ff;
       font-size:13px;
     }
-    .reg2-field select{
+    .rn-field select{
       appearance:none;
       cursor:pointer;
     }
-    .reg2-placeholder{
-      font-size:12px;
-      color:#9ca3af;
+    .rn-row-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
     }
-    .reg2-eye{
+    .rn-eye{
       position:absolute;
-      right:10px;
+      right:12px;
       top:50%;
       transform:translateY(-50%);
       font-size:11px;
       text-transform:uppercase;
-      letter-spacing:.08em;
-      color:#a3e635;
+      letter-spacing:.1em;
+      color:#bef264;
       cursor:pointer;
+      user-select:none;
     }
-
-    /* ---------- TERMS & BUTTON ---------- */
-    .reg2-terms{
+    .rn-terms{
       display:flex;
       align-items:center;
       gap:6px;
@@ -121,11 +121,11 @@
       color:#9ca3af;
       margin-top:4px;
     }
-    .reg2-terms input{
+    .rn-terms input{
       width:14px;
       height:14px;
     }
-    .reg2-btn{
+    .rn-btn{
       margin-top:10px;
       width:100%;
       border:none;
@@ -134,79 +134,71 @@
       font-size:13px;
       font-weight:600;
       text-transform:uppercase;
-      letter-spacing:.1em;
+      letter-spacing:.14em;
       background:linear-gradient(135deg,#22c55e,#4ade80);
       color:#022c22;
-      box-shadow:0 18px 40px rgba(34,197,94,.7);
+      box-shadow:0 18px 40px rgba(34,197,94,.9);
       cursor:pointer;
       transition:transform .1s,box-shadow .1s;
     }
-    .reg2-btn:hover{
+    .rn-btn:hover{
       transform:translateY(-1px);
-      box-shadow:0 22px 50px rgba(34,197,94,.8);
+      box-shadow:0 22px 56px rgba(34,197,94,1);
     }
-
-    /* ---------- FOOTER TEXT ---------- */
-    .reg2-bottom{
+    .rn-bottom{
       margin-top:12px;
       text-align:center;
       font-size:11px;
       color:#9ca3af;
     }
 
-    /* ---------- REFERRAL PREVIEW ---------- */
-    .reg2-ref-preview{
-      font-size:11px;
-      margin-top:4px;
-      color:#a3e635;
-      word-break:break-all;
-    }
+   @media (max-width: 480px) {
+  .rn-card{
+    padding:22px 18px 18px;
+  }
+}
 
-    /* SMALL SCREEN */
-    @media(max-width:480px){
-      .reg2-card{padding:20px 18px;}
-    }
   </style>
 </head>
 <body>
 
-<div class="reg2-wrap">
-  <div class="reg2-card">
-    <div class="reg2-glow"></div>
+<div class="rn-wrap">
+  <div class="rn-card">
+    <div class="rn-glow"></div>
+    <div class="rn-inner">
 
-    <div class="reg2-inner">
-      <div class="reg2-title">
-        <h1>Register</h1>
-        <p>BTX.ONE • USDT MLM • Neon Form</p>
+      <div class="rn-title">
+        <h1>REGISTER</h1>
+        <p>BTX.ONE • USDT MLM • Demo</p>
       </div>
 
-      <form id="reg2Form" class="reg2-form">
-        <div class="reg2-group">
+      <form id="rnForm" class="rn-form">
+        <div class="rn-group">
           <label>Full Name</label>
-          <div class="reg2-field">
-            <input type="text" name="full_name" placeholder="Your full name" required>
+          <div class="rn-field">
+            <input type="text" name="full_name" placeholder="Your full name" required />
           </div>
         </div>
 
-        <div class="reg2-group">
+        <div class="rn-group">
           <label>Username</label>
-          <div class="reg2-field">
-            <input type="text" name="username" id="reg2Username" placeholder="btxuser01" required>
+          <div class="rn-field">
+            <input type="text" name="username" placeholder="btxuser01" required />
           </div>
         </div>
 
-        <div class="reg2-group">
+        <div class="rn-group">
           <label>Email</label>
-          <div class="reg2-field">
-            <input type="email" name="email" placeholder="you@example.com" required>
+          <div class="rn-field">
+            <input type="email" name="email" placeholder="you@example.com" required />
           </div>
         </div>
 
-        <div class="reg2-group">
+        <div class="rn-group">
           <label>Select Country</label>
-          <div class="reg2-field">
+          <div class="rn-field">
             <select name="country" required>
-              <option value="" disabled selected>Choose your country</option>
+              <option value="" disabled selected>Select Country</option>
               <option value="Bangladesh">Bangladesh</option>
               <option value="India">India</option>
               <option value="Pakistan">Pakistan</option>
@@ -216,103 +208,87 @@
               <option value="Saudi Arabia">Saudi Arabia</option>
               <option value="Qatar">Qatar</option>
               <option value="Kuwait">Kuwait</option>
+              <option value="Malaysia">Malaysia</option>
+              <option value="Singapore">Singapore</option>
               <option value="United States">United States</option>
               <option value="United Kingdom">United Kingdom</option>
-              <option value="Canada">Canada</option>
-              <!-- চাইলে আরো country option এখানে add করতে পারো -->
             </select>
           </div>
         </div>
 
-        <div class="reg2-group">
+        <div class="rn-group">
           <label>Mobile Number</label>
-          <div class="reg2-field">
-            <input type="text" name="mobile" placeholder="+8801XXXXXXXXX" required>
+          <div class="rn-field">
+            <input type="text" name="mobile" placeholder="+8801XXXXXXXXX" required />
           </div>
         </div>
 
-        <div class="reg2-group">
-          <label>Password</label>
-          <div class="reg2-field">
-            <input type="password" name="password" id="reg2Pass" required>
-            <span class="reg2-eye" data-target="reg2Pass">SHOW</span>
+        <div class="rn-row-2">
+          <div class="rn-group">
+            <label>Password</label>
+            <div class="rn-field">
+              <input type="password" id="rnPass1" name="password" required />
+              <span class="rn-eye" data-target="rnPass1">SHOW</span>
+            </div>
+          </div>
+
+          <div class="rn-group">
+            <label>Re-enter Password</label>
+            <div class="rn-field">
+              <input type="password" id="rnPass2" name="password2" required />
+              <span class="rn-eye" data-target="rnPass2">SHOW</span>
+            </div>
           </div>
         </div>
 
-        <div class="reg2-group">
-          <label>Re-enter Password</label>
-          <div class="reg2-field">
-            <input type="password" name="password2" id="reg2Pass2" required>
-            <span class="reg2-eye" data-target="reg2Pass2">SHOW</span>
+        <div class="rn-group">
+          <label>Referral Code (optional)</label>
+          <div class="rn-field">
+            <input type="text" name="ref_code" placeholder="Sponsor / referral code" />
           </div>
         </div>
 
-        <div class="reg2-group">
-          <label>Referral Code / Link</label>
-          <div class="reg2-field">
-            <input type="text" name="ref_code" id="reg2Ref" placeholder="e.g. GSN2024">
-          </div>
-          <div class="reg2-ref-preview" id="reg2RefPreview">
-            Referral link preview: –
-          </div>
-        </div>
-
-        <label class="reg2-terms">
-          <input type="checkbox" required>
+        <label class="rn-terms">
+          <input type="checkbox" required />
           I accept the Terms & Conditions (demo)
         </label>
 
-        <button type="submit" class="reg2-btn">Register</button>
+        <button type="submit" class="rn-btn">Register</button>
       </form>
 
-      <div class="reg2-bottom">
+      <div class="rn-bottom">
         Already have an account?
         <a href="login.html">Login</a>
       </div>
+
     </div>
   </div>
 </div>
 
 <script>
-  // SHOW / HIDE PASSWORD
-  document.querySelectorAll(".reg2-eye").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.getAttribute("data-target");
-      const input = document.getElementById(id);
+  // Show / hide password fields
+  document.querySelectorAll(".rn-eye").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      var targetId = btn.getAttribute("data-target");
+      var input = document.getElementById(targetId);
       if (!input) return;
-      const isPass = input.type === "password";
-      input.type = isPass ? "text" : "password";
-      btn.textContent = isPass ? "HIDE" : "SHOW";
+
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "HIDE";
+      } else {
+        input.type = "password";
+        btn.textContent = "SHOW";
+      }
     });
   });
 
-  // REFERRAL LINK PREVIEW (based on code or username)
-  const usernameInput = document.getElementById("reg2Username");
-  const refInput = document.getElementById("reg2Ref");
-  const refPreview = document.getElementById("reg2RefPreview");
-  const baseUrl = "https://btx.one/register?ref="; // চাইলে নিজের ডোমেইন দাও
-
-  function updateRefPreview() {
-    const ref = refInput.value || usernameInput.value;
-    if (!ref) {
-      refPreview.textContent = "Referral link preview: –";
-    } else {
-      refPreview.textContent = "Referral link preview: " + baseUrl + encodeURIComponent(ref);
-    }
-  }
-  if (usernameInput && refInput && refPreview) {
-    usernameInput.addEventListener("input", updateRefPreview);
-    refInput.addEventListener("input", updateRefPreview);
-    updateRefPreview();
-  }
-
-  // DEMO SUBMIT
-  const form = document.getElementById("reg2Form");
-  form.addEventListener("submit", (e) => {
+  // Demo submit
+  var rnForm = document.getElementById("rnForm");
+  rnForm.addEventListener("submit", function(e) {
     e.preventDefault();
-    alert("✅ Demo registration complete!\\n\\nএই ফর্ম এখন শুধু ডিজাইন/ফরমেট টেস্ট করছে, কোনো ডাটাবেজে সেভ হচ্ছে না।");
-    form.reset();
-    updateRefPreview();
+    alert("✅ Demo registration complete! Data শুধু ফ্রন্টএন্ডে টেস্ট হচ্ছে, কোথাও সেভ হচ্ছে না।");
+    rnForm.reset();
   });
 </script>
 
