@@ -137,76 +137,57 @@
       color:#9ca3af;
     }
 
-    @media(max-width:480px){
+    @media (max-width:480px){
       .lg-card{padding:22px 18px;}
     }
   </style>
 </head>
-<body>
 
-<div class="lg-wrap">
-  <div class="lg-card">
-    <div class="lg-glow"></div>
-    <div class="lg-inner">
+<body data-page="login">
+  <div class="lg-wrap">
+    <div class="lg-card">
+      <div class="lg-glow"></div>
+      <div class="lg-inner">
 
-      <div class="lg-title">
-        <h1>LOGIN</h1>
-        <p>BTX.ONE • Member Panel (Demo)</p>
-      </div>
+        <div class="lg-title">
+          <h1>LOGIN</h1>
+          <p>BTX.ONE • Member Panel (Demo)</p>
+        </div>
 
-      <form id="lgForm" class="lg-form">
-        <div class="lg-group">
-          <label>Username / Email</label>
-          <div class="lg-field">
-            <input type="text" name="username" placeholder="btxuser01 or you@example.com" required>
+        <form id="lgForm" class="lg-form">
+          <div class="lg-group">
+            <label>Username / Email</label>
+            <div class="lg-field">
+              <input type="text" name="username" placeholder="btxuser01 or you@example.com" required>
+            </div>
           </div>
-        </div>
 
-        <div class="lg-group">
-          <label>Password</label>
-          <div class="lg-field">
-            <input type="password" name="password" id="lgPass" required>
-            <span class="lg-eye" data-target="lgPass">SHOW</span>
+          <div class="lg-group">
+            <label>Password</label>
+            <div class="lg-field">
+              <input type="password" name="password" id="lgPass" required>
+              <span class="lg-eye" data-target="lgPass">SHOW</span>
+            </div>
           </div>
+
+          <div class="lg-row">
+            <span>Demo only – no real login.</span>
+            <a href="#">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="lg-btn">Login</button>
+        </form>
+
+        <div class="lg-bottom">
+          Don’t have an account?
+          <a href="register-neon.html">Create new account</a>
         </div>
 
-        <div class="lg-row">
-          <span>Demo only – no real login.</span>
-          <a href="#">Forgot password?</a>
-        </div>
-
-        <button type="submit" class="lg-btn">Login</button>
-      </form>
-
-      <div class="lg-bottom">
-        Don’t have an account?
-        <a href="register-neon.html">Create new account</a>
       </div>
-
     </div>
   </div>
-</div>
 
-<script>
-  // show / hide password
-  document.querySelectorAll(".lg-eye").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const id = btn.getAttribute("data-target");
-      const input = document.getElementById(id);
-      if(!input) return;
-      const isPass = input.type === "password";
-      input.type = isPass ? "text" : "password";
-      btn.textContent = isPass ? "HIDE" : "SHOW";
-    });
-  });
-
-  // demo submit
-  const lgForm = document.getElementById("lgForm");
-  lgForm.addEventListener("submit",e=>{
-    e.preventDefault();
-    alert("✅ Demo login success! বাস্তবে এখন শুধু ফ্রন্টএন্ড টেস্ট হচ্ছে।");
-  });
-</script>
-
+  <!-- এখানে আর inline script নেই, সব logic app.js এ -->
+  <script src="app.js"></script>
 </body>
 </html>

@@ -152,15 +152,12 @@
       color:#9ca3af;
     }
 
-   @media (max-width: 480px) {
-  .rn-card{
-    padding:22px 18px 18px;
-  }
-}
-
+    @media (max-width:480px){
+      .rn-card{padding:22px 18px 18px;}
+    }
   </style>
 </head>
-<body>
+<body data-page="register">
 
 <div class="rn-wrap">
   <div class="rn-card">
@@ -265,32 +262,6 @@
   </div>
 </div>
 
-<script>
-  // Show / hide password fields
-  document.querySelectorAll(".rn-eye").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-      var targetId = btn.getAttribute("data-target");
-      var input = document.getElementById(targetId);
-      if (!input) return;
-
-      if (input.type === "password") {
-        input.type = "text";
-        btn.textContent = "HIDE";
-      } else {
-        input.type = "password";
-        btn.textContent = "SHOW";
-      }
-    });
-  });
-
-  // Demo submit
-  var rnForm = document.getElementById("rnForm");
-  rnForm.addEventListener("submit", function(e) {
-    e.preventDefault();
-    alert("✅ Demo registration complete! Data শুধু ফ্রন্টএন্ডে টেস্ট হচ্ছে, কোথাও সেভ হচ্ছে না।");
-    rnForm.reset();
-  });
-</script>
-
+<script src="app.js"></script>
 </body>
 </html>
