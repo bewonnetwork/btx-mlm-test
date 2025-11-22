@@ -31,18 +31,19 @@
       align-items:center;
       gap:10px;
     }
+    /* পুরোনো সবুজ B-বক্স আর ব্যবহার করছি না, চাইলে CSS রেখে দাও */
     .brand-logo{
-      width:40px;
-      height:40px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:radial-gradient(circle at 30% 0,#4ade80,#22c55e);
-      box-shadow:0 0 22px rgba(34,197,94,.9);
-      font-weight:800;
-      font-size:18px;
-      color:#022c22;
+      display:none;
+    }
+    /* 🔹 নতুন গোল BTX Logo (images/logo.png) */
+    .brand-logo-img{
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      object-fit:cover;
+      filter:
+        drop-shadow(0 0 8px rgba(255,255,255,.35))
+        drop-shadow(0 0 18px rgba(34,197,94,.55));
     }
     .brand-title h1{
       font-size:18px;
@@ -283,7 +284,8 @@
     <!-- HEADER -->
     <header class="dash-header">
       <div class="brand">
-        <div class="brand-logo">B</div>
+        <!-- 🔹 নতুন গোল logo -->
+        <img src="images/logo.png" alt="BTX Logo" class="brand-logo-img">
         <div class="brand-title">
           <h1>BTX.ONE</h1>
           <p>USDT MLM • Member Dashboard (Demo)</p>
@@ -322,22 +324,22 @@
           <div class="summary-card">
             <p>Current Balance (Demo)</p>
             <h3 id="sumBalance">$0.00</h3>
-            <div class="summary-tag">Auto-demo – no real funds</div>
+            <div class="summary-tag">ROI + All Income</div>
           </div>
           <div class="summary-card">
             <p>Total Deposit</p>
             <h3 id="sumDeposit">$0.00</h3>
-            <div class="summary-tag">Future ROI engine</div>
+            <div class="summary-tag">Demo deposited amount</div>
           </div>
           <div class="summary-card">
             <p>Direct Sponsor Income</p>
             <h3 id="sumDirect">$0.00</h3>
-            <div class="summary-tag">Based on referrals</div>
+            <div class="summary-tag">From direct referrals</div>
           </div>
           <div class="summary-card">
-            <p>Team Members (Demo)</p>
-            <h3 id="sumTeam">0</h3>
-            <div class="summary-tag">Will link with tree</div>
+            <p>Rank (Demo)</p>
+            <h3 id="sumTeam">No Rank</h3>
+            <div class="summary-tag">Based on team business</div>
           </div>
         </div>
 
@@ -409,6 +411,9 @@
     </section>
   </div>
 
+  <!-- 🔹 যদি mlm.js আছে, এই স্ক্রিপ্ট তার উপরে বসাও -->
+  <script src="mlm.js"></script>
+
   <script>
     var STORAGE_CURRENT = "btx_current_user_v1";
 
@@ -455,25 +460,40 @@
     (function initDashboard(){
       var user = getCurrentUser();
       if(!user){
-        // কেউ লগইন না করলে
         window.location.href = "login.html";
         return;
       }
 
+      // 🔹 default = registration-এ সেভ হওয়া ডাটা
+      var me = user;
+
+      // 🔹 যদি BTX_MLM engine থাকে → income, deposit, rank আপডেট নেব
+      if(window.BTX_MLM && typeof BTX_MLM.recalcAll === "function"){
+        try{
+          BTX_MLM.recalcAll();
+          var fromEngine = BTX_MLM.getUser(user.username);
+          if(fromEngine){
+            me = fromEngine;
+          }
+        }catch(e){
+          console.warn("MLM engine error (demo):", e);
+        }
+      }
+
       // Role অনুযায়ী admin বাটন
       var adminBtn = document.getElementById("adminBtn");
-      if(user.role === "admin"){
+      if(me.role === "admin"){
         adminBtn.style.display = "inline-flex";
       }
 
       // Welcome text
       document.getElementById("welcomeName").textContent =
-        "Welcome, " + (user.fullName || user.username || "Member");
+        "Welcome, " + (me.fullName || me.username || "Member");
       document.getElementById("welcomeUser").textContent =
-        "@" + (user.username || "");
+        "@" + (me.username || "");
 
       var roleBadge = document.getElementById("roleBadge");
-      if(user.role === "admin"){
+      if(me.role === "admin"){
         roleBadge.innerHTML =
           '<span class="badge-role">● ADMIN PANEL ACCESS</span>';
       }else{
@@ -483,50 +503,55 @@
 
       // Small info right
       document.getElementById("infoEmail").textContent =
-        "Email: " + (user.email || "-");
+        "Email: " + (me.email || "-");
       document.getElementById("infoCountry").textContent =
-        "Country: " + (user.country || "-");
+        "Country: " + (me.country || "-");
       document.getElementById("infoMobile").textContent =
-        "Mobile: " + (user.mobile || "-");
+        "Mobile: " + (me.mobile || "-");
       document.getElementById("infoSponsor").textContent =
-        "Sponsor: " + (user.sponsor_username || "N/A");
+        "Sponsor: " + (me.sponsor_username || "N/A");
 
       // Account box
-      document.getElementById("accName").textContent = user.fullName || "-";
-      document.getElementById("accUser").textContent = user.username || "-";
-      document.getElementById("accEmail").textContent = user.email || "-";
+      document.getElementById("accName").textContent = me.fullName || "-";
+      document.getElementById("accUser").textContent = me.username || "-";
+      document.getElementById("accEmail").textContent = me.email || "-";
       document.getElementById("accRole").textContent =
-        (user.role === "admin" ? "Admin" : "Member");
+        (me.role === "admin" ? "Admin" : "Member");
 
-      document.getElementById("accCountry").textContent = user.country || "-";
-      document.getElementById("accMobile").textContent = user.mobile || "-";
+      document.getElementById("accCountry").textContent = me.country || "-";
+      document.getElementById("accMobile").textContent = me.mobile || "-";
       document.getElementById("accSponsor").textContent =
-        user.sponsor_username || "-";
+        me.sponsor_username || "-";
 
-      if(user.createdAt){
+      if(me.createdAt){
         try{
-          var d = new Date(user.createdAt);
+          var d = new Date(me.createdAt);
           document.getElementById("accJoined").textContent = d.toLocaleString();
         }catch(e){
           document.getElementById("accJoined").textContent = "-";
         }
       }
 
-      // Referral link – যদি পুরানো ডাটায় না থাকে তবে নতুন বানায়
-      var refLink = user.referralLink;
+      // Referral link – যদি registration এ সেভ থাকে ব্যবহার, না থাকলে নতুন বানাই
+      var refLink = me.referralLink;
       if(!refLink){
         refLink =
           window.location.origin +
           "/register-neon.html?ref=" +
-          encodeURIComponent(user.username || "");
+          encodeURIComponent(me.username || "");
       }
       document.getElementById("myRefLink").value = refLink;
 
-      // Summary ডাটা (এখন সব demo 0, চাইলে পরে হিসাব যোগ করব)
-      document.getElementById("sumBalance").textContent = "$0.00";
-      document.getElementById("sumDeposit").textContent = "$0.00";
-      document.getElementById("sumDirect").textContent = "$0.00";
-      document.getElementById("sumTeam").textContent = "0";
+      // 🔹 Summary ডাটা – যদি MLM engine না থাকে সব 0.00 থাকবে
+      var dep  = me.deposit      || 0;
+      var bal  = me.totalIncome  || 0;
+      var dir  = me.directIncome || 0;
+      var rank = me.rankName     || "No Rank";
+
+      document.getElementById("sumBalance").textContent = "$" + bal.toFixed(2);
+      document.getElementById("sumDeposit").textContent = "$" + dep.toFixed(2);
+      document.getElementById("sumDirect").textContent  = "$" + dir.toFixed(2);
+      document.getElementById("sumTeam").textContent    = rank;
     })();
   </script>
 </body>
