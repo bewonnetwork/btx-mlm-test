@@ -252,117 +252,140 @@
     </div>
   </div>
 
-  <!-- JS – registration + localStorage + referral link -->
+  <!-- JS – registration + localStorage + referral link (ES5, simple) -->
   <script>
-  const STORAGE_USERS = "btx_users_v1";
+    // localStorage key
+    var STORAGE_USERS = "btx_users_v1";
 
-  function loadUsers(){
-    const raw = localStorage.getItem(STORAGE_USERS);
-    if(!raw) return [];
-    try { return JSON.parse(raw); } catch(e){ return []; }
-  }
-  function saveUsers(users){
-    localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
-  }
+    function loadUsers(){
+      var raw = localStorage.getItem(STORAGE_USERS);
+      if(!raw) return [];
+      try {
+        return JSON.parse(raw);
+      } catch(e){
+        return [];
+      }
+    }
 
-  // --- AUTO REFERRAL DETECT FROM URL (?ref=username) ---
-  const urlParams = new URLSearchParams(window.location.search);
-  const autoRef = urlParams.get("ref");
-  if (autoRef) {
-    const refInput = document.getElementById("refCode");
-    if (refInput) refInput.value = autoRef;
-  }
+    function saveUsers(users){
+      localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+    }
 
-  // show / hide password
-  document.querySelectorAll(".rn-eye").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const id = btn.getAttribute("data-target");
-      const input = document.getElementById(id);
-      if(!input) return;
-      const isPass = input.type === "password";
-      input.type = isPass ? "text" : "password";
-      btn.textContent = isPass ? "HIDE" : "SHOW";
+    // --- URL থেকে ?ref=username ধরার ফাংশন (ES5 স্টাইল) ---
+    function getAutoRef(){
+      var search = window.location.search || "";
+      if(search.indexOf("?") === 0){
+        search = search.substring(1);
+      }
+      if(!search) return "";
+      var parts = search.split("&");
+      for(var i=0;i<parts.length;i++){
+        var kv = parts[i].split("=");
+        if(kv[0] === "ref"){
+          return decodeURIComponent(kv[1] || "");
+        }
+      }
+      return "";
+    }
+
+    var autoRef = getAutoRef();
+    if(autoRef){
+      var refInput = document.getElementById("refCode");
+      if(refInput){
+        refInput.value = autoRef;
+      }
+    }
+
+    // show / hide password
+    var eyeBtns = document.querySelectorAll(".rn-eye");
+    for(var i=0;i<eyeBtns.length;i++){
+      eyeBtns[i].addEventListener("click", function(){
+        var id = this.getAttribute("data-target");
+        var input = document.getElementById(id);
+        if(!input) return;
+        var isPass = input.type === "password";
+        input.type = isPass ? "text" : "password";
+        this.textContent = isPass ? "HIDE" : "SHOW";
+      });
+    }
+
+    var regForm = document.getElementById("registerForm");
+    regForm.addEventListener("submit", function(e){
+      e.preventDefault();
+
+      var fullName = document.getElementById("fullName").value.replace(/^\s+|\s+$/g,"");
+      var username = document.getElementById("username").value.replace(/^\s+|\s+$/g,"").toLowerCase();
+      var email    = document.getElementById("email").value.replace(/^\s+|\s+$/g,"").toLowerCase();
+      var country  = document.getElementById("country").value;
+      var mobile   = document.getElementById("mobile").value.replace(/^\s+|\s+$/g,"");
+      var pass1    = document.getElementById("password").value;
+      var pass2    = document.getElementById("password2").value;
+      var refCodeInput  = document.getElementById("refCode").value.replace(/^\s+|\s+$/g,"");
+      var termsChk = document.getElementById("terms");
+
+      if(!fullName || !username || !email || !country || !mobile){
+        alert("❗ সবগুলো required ফিল্ড পূরণ করুন।");
+        return;
+      }
+      if(!termsChk.checked){
+        alert("❗ Terms & Conditions এ টিক দিন।");
+        return;
+      }
+      if(pass1.length < 4){
+        alert("🔐 Password কমপক্ষে ৪ অক্ষরের দিন।");
+        return;
+      }
+      if(pass1 !== pass2){
+        alert("❌ Password এবং Re-enter Password মিলছে না।");
+        return;
+      }
+
+      var users = loadUsers();
+
+      for(var j=0;j<users.length;j++){
+        if(users[j].username === username){
+          alert("⚠ এই username আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
+          return;
+        }
+        if(users[j].email === email){
+          alert("⚠ এই email আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
+          return;
+        }
+      }
+
+      // URL থেকে আসা ref থাকলে সেটা, না থাকলে ইনপুটের ref
+      var sponsorUsername = (autoRef || refCodeInput || "").toLowerCase();
+
+      // 👉 প্রথম ইউজার = admin, পরে সবাই member
+      var role = users.length === 0 ? "admin" : "member";
+
+      var newUser = {
+        id: Date.now(),
+        fullName: fullName,
+        username: username,
+        email: email,
+        country: country,
+        mobile: mobile,
+        refCode: refCodeInput,
+        sponsor_username: sponsorUsername || null,
+        password: pass1,
+        role: role,
+        createdAt: new Date().toISOString(),
+        referralLink: window.location.origin + "/register-neon.html?ref=" + encodeURIComponent(username)
+      };
+
+      users.push(newUser);
+      saveUsers(users);
+
+      if(role === "admin"){
+        alert("✅ Registration successful! আপনি এখন admin হিসেবে সেট হয়েছেন। এবার Login করুন।");
+      }else{
+        alert("✅ Registration successful! এখন এই username/email + password দিয়ে Login করতে পারবেন।");
+      }
+
+      regForm.reset();
+      window.location.href = "login.html";
     });
-  });
-
-  const regForm = document.getElementById("registerForm");
-  regForm.addEventListener("submit", (e)=>{
-    e.preventDefault();
-
-    const fullName = document.getElementById("fullName").value.trim();
-    const username = document.getElementById("username").value.trim().toLowerCase();
-    const email    = document.getElementById("email").value.trim().toLowerCase();
-    const country  = document.getElementById("country").value;
-    const mobile   = document.getElementById("mobile").value.trim();
-    const pass1    = document.getElementById("password").value;
-    const pass2    = document.getElementById("password2").value;
-    const refCodeInput  = document.getElementById("refCode").value.trim();
-    const termsChk = document.getElementById("terms");
-
-    if(!fullName || !username || !email || !country || !mobile){
-      alert("❗ সবগুলো required ফিল্ড পূরণ করুন।");
-      return;
-    }
-    if(!termsChk.checked){
-      alert("❗ Terms & Conditions এ টিক দিন।");
-      return;
-    }
-    if(pass1.length < 4){
-      alert("🔐 Password কমপক্ষে ৪ অক্ষরের দিন।");
-      return;
-    }
-    if(pass1 !== pass2){
-      alert("❌ Password এবং Re-enter Password মিলছে না।");
-      return;
-    }
-
-    const users = loadUsers();
-
-    if(users.some(u=>u.username === username)){
-      alert("⚠ এই username আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
-      return;
-    }
-    if(users.some(u=>u.email === email)){
-      alert("⚠ এই email আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
-      return;
-    }
-
-    // URL থেকে আসা ref থাকলে সেটা, না থাকলে ইনপুটের ref
-    const sponsorUsername = (autoRef || refCodeInput || "").toLowerCase();
-
-    // 👉 প্রথম ইউজার = admin, পরে সবাই member
-    const role = users.length === 0 ? "admin" : "member";
-
-    const newUser = {
-      id: Date.now(),
-      fullName,
-      username,
-      email,
-      country,
-      mobile,
-      // ইনপুট দেওয়া কাঁচা ref
-      refCode: refCodeInput,
-      // যাকে sponsor হিসেবে ধরব
-      sponsor_username: sponsorUsername || null,
-      password: pass1,
-      role,
-      createdAt: new Date().toISOString(),
-      // নিজের referral link
-      referralLink: ${window.location.origin}/register-neon.html?ref=${encodeURIComponent(username)}
-    };
-
-    users.push(newUser);
-    saveUsers(users);
-
-    if(role === "admin"){
-      alert("✅ Registration successful! আপনি এখন admin হিসেবে সেট হয়েছেন। এবার Login করুন।");
-    }else{
-      alert("✅ Registration successful! এখন এই username/email + password দিয়ে Login করতে পারবেন।");
-    }
-
-    regForm.reset();
-    window.location.href = "login.html";
-  });
   </script>
 </body>
 </html>
