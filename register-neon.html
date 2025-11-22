@@ -254,75 +254,97 @@
 
   <!-- JS – registration + localStorage -->
   <script>
-    const STORAGE_USERS = "btx_users_v1";
+  const STORAGE_USERS = "btx_users_v1";
 
-    function loadUsers(){
-      const raw = localStorage.getItem(STORAGE_USERS);
-      if(!raw) return [];
-      try { return JSON.parse(raw); } catch(e){ return []; }
-    }
-    function saveUsers(users){
-      localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
-    }
+  function loadUsers(){
+    const raw = localStorage.getItem(STORAGE_USERS);
+    if(!raw) return [];
+    try { return JSON.parse(raw); } catch(e){ return []; }
+  }
+  function saveUsers(users){
+    localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+  }
 
-    // show/hide password
-    document.querySelectorAll(".rn-eye").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const id = btn.getAttribute("data-target");
-        const input = document.getElementById(id);
-        if(!input) return;
-        const isPass = input.type === "password";
-        input.type = isPass ? "text" : "password";
-        btn.textContent = isPass ? "HIDE" : "SHOW";
-      });
+  // show / hide password
+  document.querySelectorAll(".rn-eye").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-target");
+      const input = document.getElementById(id);
+      if(!input) return;
+      const isPass = input.type === "password";
+      input.type = isPass ? "text" : "password";
+      btn.textContent = isPass ? "HIDE" : "SHOW";
     });
+  });
 
-    const regForm = document.getElementById("registerForm");
-    regForm.addEventListener("submit", (e)=>{
-      e.preventDefault();
+  const regForm = document.getElementById("registerForm");
+  regForm.addEventListener("submit", (e)=>{
+    e.preventDefault();
 
-      const fullName = document.getElementById("fullName").value.trim();
-      const username = document.getElementById("username").value.trim().toLowerCase();
-      const email    = document.getElementById("email").value.trim().toLowerCase();
-      const country  = document.getElementById("country").value;
-      const mobile   = document.getElementById("mobile").value.trim();
-      const pass1    = document.getElementById("password").value;
-      const pass2    = document.getElementById("password2").value;
-      const refCode  = document.getElementById("refCode").value.trim();
+    const fullName = document.getElementById("fullName").value.trim();
+    const username = document.getElementById("username").value.trim().toLowerCase();
+    const email    = document.getElementById("email").value.trim().toLowerCase();
+    const country  = document.getElementById("country").value;
+    const mobile   = document.getElementById("mobile").value.trim();
+    const pass1    = document.getElementById("password").value;
+    const pass2    = document.getElementById("password2").value;
+    const refCode  = document.getElementById("refCode").value.trim();
+    const termsChk = document.getElementById("terms");
 
-      if(!fullName || !username || !email || !country || !mobile){
-        alert("❗ সবগুলো required ফিল্ড পূরণ করুন।");
-        return;
-      }
-      if(pass1.length < 4){
-        alert("🔐 Password কমপক্ষে ৪ অক্ষরের দিন।");
-        return;
-      }
-      if(pass1 !== pass2){
-        alert("❌ Password এবং Re-enter Password মিলছে না।");
-        return;
-      }
+    if(!fullName || !username || !email || !country || !mobile){
+      alert("❗ সবগুলো required ফিল্ড পূরণ করুন।");
+      return;
+    }
+    if(!termsChk.checked){
+      alert("❗ Terms & Conditions এ টিক দিন।");
+      return;
+    }
+    if(pass1.length < 4){
+      alert("🔐 Password কমপক্ষে ৪ অক্ষরের দিন।");
+      return;
+    }
+    if(pass1 !== pass2){
+      alert("❌ Password এবং Re-enter Password মিলছে না।");
+      return;
+    }
 
-      const users = loadUsers();
-      if(users.some(u=>u.username === username)){
-        alert("⚠ এই username আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
-        return;
-      }
-      if(users.some(u=>u.email === email)){
-        alert("⚠ এই email আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
-        return;
-      }
+    const users = loadUsers();
 
-      users.push({
-        fullName, username, email, country, mobile, refCode,
-        password: pass1
-      });
-      saveUsers(users);
+    if(users.some(u=>u.username === username)){
+      alert("⚠ এই username আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
+      return;
+    }
+    if(users.some(u=>u.email === email)){
+      alert("⚠ এই email আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
+      return;
+    }
 
-      alert("✅ Registration successful! এখন এই username/email + password দিয়ে Login করতে পারবে।");
-      regForm.reset();
-      window.location.href = "login.html";
+    // 👉 প্রথম ইউজার = admin, পরে সবাই member
+    const role = users.length === 0 ? "admin" : "member";
+
+    users.push({
+      id: Date.now(),
+      fullName,
+      username,
+      email,
+      country,
+      mobile,
+      refCode,
+      password: pass1,
+      role,
+      createdAt: new Date().toISOString()
     });
-  </script>
+    saveUsers(users);
+
+    if(role === "admin"){
+      alert("✅ Registration successful! আপনি এখন admin হিসেবে সেট হয়েছেন। এবার Login করুন।");
+    }else{
+      alert("✅ Registration successful! এখন এই username/email + password দিয়ে Login করতে পারবেন।");
+    }
+
+    regForm.reset();
+    window.location.href = "login.html";
+  });
+</script>
 </body>
 </html>

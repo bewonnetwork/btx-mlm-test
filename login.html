@@ -234,8 +234,14 @@
     }
 
     saveCurrent(user);
-    alert("✅ Demo login success!");
-    window.location.href = "dashboard.html";
+
+    if(user.role === "admin"){
+      alert("✅ Admin login success!");
+      window.location.href = "admin.html";
+    }else{
+      alert("✅ Member login success!");
+      window.location.href = "dashboard.html";
+    }
   });
 </script>
 </body>
