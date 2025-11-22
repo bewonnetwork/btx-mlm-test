@@ -252,7 +252,7 @@
     </div>
   </div>
 
-  <!-- JS – registration + localStorage -->
+  <!-- JS – registration + localStorage + referral link -->
   <script>
   const STORAGE_USERS = "btx_users_v1";
 
@@ -263,6 +263,14 @@
   }
   function saveUsers(users){
     localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+  }
+
+  // --- AUTO REFERRAL DETECT FROM URL (?ref=username) ---
+  const urlParams = new URLSearchParams(window.location.search);
+  const autoRef = urlParams.get("ref");
+  if (autoRef) {
+    const refInput = document.getElementById("refCode");
+    if (refInput) refInput.value = autoRef;
   }
 
   // show / hide password
@@ -288,7 +296,7 @@
     const mobile   = document.getElementById("mobile").value.trim();
     const pass1    = document.getElementById("password").value;
     const pass2    = document.getElementById("password2").value;
-    const refCode  = document.getElementById("refCode").value.trim();
+    const refCodeInput  = document.getElementById("refCode").value.trim();
     const termsChk = document.getElementById("terms");
 
     if(!fullName || !username || !email || !country || !mobile){
@@ -319,21 +327,31 @@
       return;
     }
 
+    // URL থেকে আসা ref থাকলে সেটা, না থাকলে ইনপুটের ref
+    const sponsorUsername = (autoRef || refCodeInput || "").toLowerCase();
+
     // 👉 প্রথম ইউজার = admin, পরে সবাই member
     const role = users.length === 0 ? "admin" : "member";
 
-    users.push({
+    const newUser = {
       id: Date.now(),
       fullName,
       username,
       email,
       country,
       mobile,
-      refCode,
+      // ইনপুট দেওয়া কাঁচা ref
+      refCode: refCodeInput,
+      // যাকে sponsor হিসেবে ধরব
+      sponsor_username: sponsorUsername || null,
       password: pass1,
       role,
-      createdAt: new Date().toISOString()
-    });
+      createdAt: new Date().toISOString(),
+      // নিজের referral link
+      referralLink: ${window.location.origin}/register-neon.html?ref=${encodeURIComponent(username)}
+    };
+
+    users.push(newUser);
     saveUsers(users);
 
     if(role === "admin"){
@@ -345,6 +363,6 @@
     regForm.reset();
     window.location.href = "login.html";
   });
-</script>
+  </script>
 </body>
 </html>
