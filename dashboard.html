@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BTX.ONE – Member Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="app.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-left">
+    <div class="logo-3d"><span>BTX</span></div>
+    <div class="nav-title">
+      <h1>BTX.ONE</h1>
+      <p>USDT MLM Network</p>
+    </div>
+  </div>
+  <nav class="nav-menu">
+    <a href="index.html#home">Home</a>
+    <a href="index.html#packages">Packages</a>
+    <a href="index.html#register">Register</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+  <a href="login.html" class="btn-outline">Logout (Demo)</a>
+</header>
+
+<section class="section">
+  <h2 class="section-title">Member Dashboard</h2>
+  <p class="section-sub">Demo panel – data comes from frontend only.</p>
+
+  <div class="dash-layout">
+    <aside class="dash-sidebar">
+      <h3>BTX Panel</h3>
+      <ul>
+        <li class="active">Overview</li>
+        <li>My Investments</li>
+        <li>My Team</li>
+        <li>Income Report</li>
+      </ul>
+    </aside>
+
+    <main class="dash-main">
+      <div class="dash-cards">
+        <div class="dash-card">
+          <p>Current Balance</p>
+          <h3 id="dbBalance">$0</h3>
+        </div>
+        <div class="dash-card">
+          <p>Total Deposit</p>
+          <h3 id="dbDeposit">$0</h3>
+        </div>
+        <div class="dash-card">
+          <p>Total Income</p>
+          <h3 id="dbIncome">$0</h3>
+        </div>
+        <div class="dash-card">
+          <p>Team Members</p>
+          <h3 id="dbTeam">0</h3>
+        </div>
+      </div>
+
+      <h4 class="table-title">Recent Deposit</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Package</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="dbTableBody"></tbody>
+      </table>
+    </main>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2025 BTX.ONE Demo – Dashboard (frontend only).</p>
+</footer>
+
+</body>
+</html>

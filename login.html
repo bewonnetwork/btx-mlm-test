@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BTX.ONE – Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-left">
+    <div class="logo-3d"><span>BTX</span></div>
+    <div class="nav-title">
+      <h1>BTX.ONE</h1>
+      <p>USDT MLM Network</p>
+    </div>
+  </div>
+  <nav class="nav-menu">
+    <a href="index.html#home">Home</a>
+    <a href="index.html#packages">Packages</a>
+    <a href="index.html#register">Register</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+  <a href="login.html" class="btn-outline">Login</a>
+</header>
+
+<section class="reg-section">
+  <div class="reg-wrap">
+    <div class="reg-top">
+      <div class="reg-logo">
+        <div class="reg-logo-badge">BTX</div>
+        <div class="reg-logo-text">
+          <h2>Member Login</h2>
+          <p>Access your BTX.ONE account</p>
+        </div>
+      </div>
+      <div class="reg-top-info">
+        <div>Secure Demo Login</div>
+        <div>No real funds required</div>
+      </div>
+    </div>
+
+    <div class="reg-grid-main">
+      <div class="reg-card">
+        <h3>Sign in to your account</h3>
+        <p class="reg-subtitle">
+          Demo মাত্র – এখন শুধু Dashboard preview-তে নিয়ে যাবে।
+        </p>
+
+        <div id="loginMessage" class="reg-alert" style="display:none;"></div>
+
+        <form id="loginForm">
+          <div class="reg-form-grid">
+            <label>Username or Email
+              <input type="text" name="username" required />
+            </label>
+            <label>Password
+              <input type="password" name="password" required />
+            </label>
+          </div>
+
+          <label class="reg-terms">
+            <input type="checkbox" required />
+            Remember me (demo)
+          </label>
+
+          <button type="submit" class="btn-primary reg-btn">
+            Login (Demo)
+          </button>
+        </form>
+      </div>
+
+      <div class="reg-card reg-card-right">
+        <h4>New to BTX.ONE?</h4>
+        <ul>
+          <li>Get daily ROI 1% – 1.5%</li>
+          <li>Earn sponsor & generation income</li>
+          <li>Join global community</li>
+        </ul>
+
+        <p class="reg-note">
+          Don’t have an account yet?  
+          <br />
+          <a href="index.html#register">Create account from Registration page →</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2025 BTX.ONE Demo – Login page (frontend only).</p>
+</footer>
+
+<script>
+  const loginForm = document.getElementById("loginForm");
+  const loginMsg  = document.getElementById("loginMessage");
+
+  if (loginForm && loginMsg) {
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(loginForm);
+      const user = formData.get("username");
+
+      loginMsg.className = "reg-alert success";
+      loginMsg.style.display = "block";
+      loginMsg.innerText =
+        "✔ Demo login successful for: " + user +
+        "\\n\\nReal project এ এখানে সার্ভার / API চেক হবে। এখন শুধু Dashboard page খুলব।";
+
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1000);
+    });
+  }
+</script>
+
+</body>
+</html>
