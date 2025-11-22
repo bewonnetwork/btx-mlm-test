@@ -2,64 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>BTX.ONE – Neon Register</title>
+  <title>BTX.ONE – Register</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
     body{
       min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      background:radial-gradient(circle at top,#1d2b64,#020617 65%);
+      background:radial-gradient(circle at top,#0f172a,#020617 60%);
       color:#e5f0ff;
     }
     a{color:#38bdf8;text-decoration:none}
 
     .rn-wrap{
       width:100%;
-      max-width:430px;
+      max-width:520px;
       padding:18px;
     }
     .rn-card{
       position:relative;
-      border-radius:26px;
-      padding:26px 22px 20px;
+      border-radius:32px;
+      padding:26px 22px 22px;
       background:linear-gradient(145deg,rgba(12,20,46,.98),rgba(15,23,42,.96));
       box-shadow:
-        0 0 0 2px rgba(163,230,53,.7),
-        0 18px 48px rgba(0,0,0,.9);
+        0 0 0 2px rgba(132,204,22,.8),
+        0 24px 60px rgba(0,0,0,.9);
       overflow:hidden;
     }
     .rn-glow{
       position:absolute;
-      inset:-80px;
+      inset:-100px;
       background:
-        radial-gradient(circle at 0 0,rgba(163,230,53,.35),transparent 55%),
-        radial-gradient(circle at 100% 100%,rgba(45,212,191,.3),transparent 55%);
+        radial-gradient(circle at 0 0,rgba(190,242,100,.25),transparent 60%),
+        radial-gradient(circle at 100% 100%,rgba(56,189,248,.28),transparent 60%);
       opacity:.9;
       pointer-events:none;
     }
     .rn-inner{position:relative;z-index:1;}
 
-    .rn-title{
-      text-align:center;
-      margin-bottom:14px;
-    }
+    .rn-title{text-align:center;margin-bottom:18px;}
     .rn-title h1{
-      font-size:22px;
-      letter-spacing:.14em;
+      font-size:24px;
+      letter-spacing:.28em;
       text-transform:uppercase;
     }
     .rn-title p{
       font-size:12px;
-      color:#9ca3af;
+      color:#a5b4fc;
       margin-top:4px;
     }
 
@@ -68,20 +59,26 @@
       flex-direction:column;
       gap:10px;
     }
-    .rn-group label{
-      font-size:12px;
-      display:block;
+    .rn-row{
+      display:flex;
+      gap:10px;
+    }
+    .rn-row > div{flex:1;}
+
+    .rn-label{
+      font-size:11px;
+      color:#e5e7eb;
       margin-bottom:4px;
-      color:#dbeafe;
+      display:block;
     }
     .rn-field{
       position:relative;
-      border-radius:18px;
-      padding:10px 14px;
-      background:rgba(15,23,42,.96);
+      border-radius:999px;
+      padding:8px 14px;
+      background:rgba(15,23,42,.98);
       box-shadow:
-        0 0 0 2px #a3e635,
-        0 0 18px rgba(163,230,53,.55);
+        0 0 0 2px rgba(190,242,100,.8),
+        0 0 18px rgba(190,242,100,.7);
     }
     .rn-field input,
     .rn-field select{
@@ -92,27 +89,24 @@
       color:#e5f0ff;
       font-size:13px;
     }
-    .rn-field select{
-      appearance:none;
-      cursor:pointer;
+    .rn-field select option{
+      background:#020617;
+      color:#e5f0ff;
     }
-    .rn-row-2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
+
     .rn-eye{
       position:absolute;
-      right:12px;
+      right:14px;
       top:50%;
       transform:translateY(-50%);
       font-size:11px;
       text-transform:uppercase;
-      letter-spacing:.1em;
-      color:#bef264;
+      letter-spacing:.14em;
+      color:#bbf7d0;
       cursor:pointer;
       user-select:none;
     }
+
     .rn-terms{
       display:flex;
       align-items:center;
@@ -121,147 +115,214 @@
       color:#9ca3af;
       margin-top:4px;
     }
-    .rn-terms input{
-      width:14px;
-      height:14px;
-    }
+
     .rn-btn{
-      margin-top:10px;
+      margin-top:12px;
       width:100%;
       border:none;
       border-radius:999px;
-      padding:10px 18px;
+      padding:11px 18px;
       font-size:13px;
       font-weight:600;
       text-transform:uppercase;
-      letter-spacing:.14em;
-      background:linear-gradient(135deg,#22c55e,#4ade80);
+      letter-spacing:.18em;
+      background:linear-gradient(135deg,#4ade80,#22c55e);
       color:#022c22;
-      box-shadow:0 18px 40px rgba(34,197,94,.9);
       cursor:pointer;
+      box-shadow:0 22px 60px rgba(74,222,128,.9);
       transition:transform .1s,box-shadow .1s;
     }
     .rn-btn:hover{
       transform:translateY(-1px);
-      box-shadow:0 22px 56px rgba(34,197,94,1);
+      box-shadow:0 26px 80px rgba(74,222,128,1);
     }
+
     .rn-bottom{
-      margin-top:12px;
+      margin-top:10px;
       text-align:center;
       font-size:11px;
       color:#9ca3af;
     }
 
-    @media (max-width:480px){
-      .rn-card{padding:22px 18px 18px;}
+    @media(max-width:480px){
+      .rn-card{padding:22px 18px;}
+      .rn-row{flex-direction:column;}
     }
   </style>
 </head>
-<body data-page="register">
 
-<div class="rn-wrap">
-  <div class="rn-card">
-    <div class="rn-glow"></div>
-    <div class="rn-inner">
+<body>
+  <div class="rn-wrap">
+    <div class="rn-card">
+      <div class="rn-glow"></div>
+      <div class="rn-inner">
 
-      <div class="rn-title">
-        <h1>REGISTER</h1>
-        <p>BTX.ONE • USDT MLM • Demo</p>
-      </div>
-
-      <form id="rnForm" class="rn-form">
-        <div class="rn-group">
-          <label>Full Name</label>
-          <div class="rn-field">
-            <input type="text" name="full_name" placeholder="Your full name" required />
-          </div>
+        <div class="rn-title">
+          <h1>REGISTER</h1>
+          <p>BTX.ONE • USDT MLM • Demo</p>
         </div>
 
-        <div class="rn-group">
-          <label>Username</label>
-          <div class="rn-field">
-            <input type="text" name="username" placeholder="btxuser01" required />
-          </div>
-        </div>
-
-        <div class="rn-group">
-          <label>Email</label>
-          <div class="rn-field">
-            <input type="email" name="email" placeholder="you@example.com" required />
-          </div>
-        </div>
-
-        <div class="rn-group">
-          <label>Select Country</label>
-          <div class="rn-field">
-            <select name="country" required>
-              <option value="" disabled selected>Select Country</option>
-              <option value="Bangladesh">Bangladesh</option>
-              <option value="India">India</option>
-              <option value="Pakistan">Pakistan</option>
-              <option value="Nepal">Nepal</option>
-              <option value="Sri Lanka">Sri Lanka</option>
-              <option value="United Arab Emirates">United Arab Emirates</option>
-              <option value="Saudi Arabia">Saudi Arabia</option>
-              <option value="Qatar">Qatar</option>
-              <option value="Kuwait">Kuwait</option>
-              <option value="Malaysia">Malaysia</option>
-              <option value="Singapore">Singapore</option>
-              <option value="United States">United States</option>
-              <option value="United Kingdom">United Kingdom</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="rn-group">
-          <label>Mobile Number</label>
-          <div class="rn-field">
-            <input type="text" name="mobile" placeholder="+8801XXXXXXXXX" required />
-          </div>
-        </div>
-
-        <div class="rn-row-2">
-          <div class="rn-group">
-            <label>Password</label>
+        <form id="registerForm" class="rn-form">
+          <div>
+            <label class="rn-label">Full Name</label>
             <div class="rn-field">
-              <input type="password" id="rnPass1" name="password" required />
-              <span class="rn-eye" data-target="rnPass1">SHOW</span>
+              <input id="fullName" name="fullName" type="text" required />
             </div>
           </div>
 
-          <div class="rn-group">
-            <label>Re-enter Password</label>
-            <div class="rn-field">
-              <input type="password" id="rnPass2" name="password2" required />
-              <span class="rn-eye" data-target="rnPass2">SHOW</span>
+          <div class="rn-row">
+            <div>
+              <label class="rn-label">Username</label>
+              <div class="rn-field">
+                <input id="username" name="username" type="text" required />
+              </div>
+            </div>
+            <div>
+              <label class="rn-label">Email</label>
+              <div class="rn-field">
+                <input id="email" name="email" type="email" required />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="rn-group">
-          <label>Referral Code (optional)</label>
-          <div class="rn-field">
-            <input type="text" name="ref_code" placeholder="Sponsor / referral code" />
+          <div class="rn-row">
+            <div>
+              <label class="rn-label">Select Country</label>
+              <div class="rn-field">
+                <select id="country" name="country" required>
+                  <option value="">Select Country</option>
+                  <option>Bangladesh</option>
+                  <option>India</option>
+                  <option>Nepal</option>
+                  <option>Qatar</option>
+                  <option>Kuwait</option>
+                  <option>Singapore</option>
+                  <option>United Arab Emirates</option>
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="rn-label">Mobile Number</label>
+              <div class="rn-field">
+                <input id="mobile" name="mobile" type="text" placeholder="+880…" required />
+              </div>
+            </div>
           </div>
+
+          <div class="rn-row">
+            <div>
+              <label class="rn-label">Password</label>
+              <div class="rn-field">
+                <input id="password" name="password" type="password" required />
+                <span class="rn-eye" data-target="password">SHOW</span>
+              </div>
+            </div>
+            <div>
+              <label class="rn-label">Re-enter Password</label>
+              <div class="rn-field">
+                <input id="password2" name="password2" type="password" required />
+                <span class="rn-eye" data-target="password2">SHOW</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="rn-label">Referral Code (optional)</label>
+            <div class="rn-field">
+              <input id="refCode" name="refCode" type="text" placeholder="Sponsor / referral code" />
+            </div>
+          </div>
+
+          <label class="rn-terms">
+            <input id="terms" type="checkbox" required />
+            <span>I accept the Terms &amp; Conditions (demo)</span>
+          </label>
+
+          <button type="submit" class="rn-btn">REGISTER</button>
+        </form>
+
+        <div class="rn-bottom">
+          Already have an account?
+          <a href="login.html">Login</a>
         </div>
 
-        <label class="rn-terms">
-          <input type="checkbox" required />
-          I accept the Terms & Conditions (demo)
-        </label>
-
-        <button type="submit" class="rn-btn">Register</button>
-      </form>
-
-      <div class="rn-bottom">
-        Already have an account?
-        <a href="login.html">Login</a>
       </div>
-
     </div>
   </div>
-</div>
 
-<script src="app.js"></script>
+  <!-- JS – registration + localStorage -->
+  <script>
+    const STORAGE_USERS = "btx_users_v1";
+
+    function loadUsers(){
+      const raw = localStorage.getItem(STORAGE_USERS);
+      if(!raw) return [];
+      try { return JSON.parse(raw); } catch(e){ return []; }
+    }
+    function saveUsers(users){
+      localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+    }
+
+    // show/hide password
+    document.querySelectorAll(".rn-eye").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const id = btn.getAttribute("data-target");
+        const input = document.getElementById(id);
+        if(!input) return;
+        const isPass = input.type === "password";
+        input.type = isPass ? "text" : "password";
+        btn.textContent = isPass ? "HIDE" : "SHOW";
+      });
+    });
+
+    const regForm = document.getElementById("registerForm");
+    regForm.addEventListener("submit", (e)=>{
+      e.preventDefault();
+
+      const fullName = document.getElementById("fullName").value.trim();
+      const username = document.getElementById("username").value.trim().toLowerCase();
+      const email    = document.getElementById("email").value.trim().toLowerCase();
+      const country  = document.getElementById("country").value;
+      const mobile   = document.getElementById("mobile").value.trim();
+      const pass1    = document.getElementById("password").value;
+      const pass2    = document.getElementById("password2").value;
+      const refCode  = document.getElementById("refCode").value.trim();
+
+      if(!fullName || !username || !email || !country || !mobile){
+        alert("❗ সবগুলো required ফিল্ড পূরণ করুন।");
+        return;
+      }
+      if(pass1.length < 4){
+        alert("🔐 Password কমপক্ষে ৪ অক্ষরের দিন।");
+        return;
+      }
+      if(pass1 !== pass2){
+        alert("❌ Password এবং Re-enter Password মিলছে না।");
+        return;
+      }
+
+      const users = loadUsers();
+      if(users.some(u=>u.username === username)){
+        alert("⚠ এই username আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
+        return;
+      }
+      if(users.some(u=>u.email === email)){
+        alert("⚠ এই email আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
+        return;
+      }
+
+      users.push({
+        fullName, username, email, country, mobile, refCode,
+        password: pass1
+      });
+      saveUsers(users);
+
+      alert("✅ Registration successful! এখন এই username/email + password দিয়ে Login করতে পারবে।");
+      regForm.reset();
+      window.location.href = "login.html";
+    });
+  </script>
 </body>
 </html>

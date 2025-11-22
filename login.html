@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <title>BTX.ONE – Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <style>
     *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
     body{
@@ -137,57 +136,107 @@
       color:#9ca3af;
     }
 
-    @media (max-width:480px){
+    @media(max-width:480px){
       .lg-card{padding:22px 18px;}
     }
   </style>
 </head>
 
-<body data-page="login">
-  <div class="lg-wrap">
-    <div class="lg-card">
-      <div class="lg-glow"></div>
-      <div class="lg-inner">
+<body>
+<div class="lg-wrap">
+  <div class="lg-card">
+    <div class="lg-glow"></div>
+    <div class="lg-inner">
 
-        <div class="lg-title">
-          <h1>LOGIN</h1>
-          <p>BTX.ONE • Member Panel (Demo)</p>
-        </div>
-
-        <form id="lgForm" class="lg-form">
-          <div class="lg-group">
-            <label>Username / Email</label>
-            <div class="lg-field">
-              <input type="text" name="username" placeholder="btxuser01 or you@example.com" required>
-            </div>
-          </div>
-
-          <div class="lg-group">
-            <label>Password</label>
-            <div class="lg-field">
-              <input type="password" name="password" id="lgPass" required>
-              <span class="lg-eye" data-target="lgPass">SHOW</span>
-            </div>
-          </div>
-
-          <div class="lg-row">
-            <span>Demo only – no real login.</span>
-            <a href="#">Forgot password?</a>
-          </div>
-
-          <button type="submit" class="lg-btn">Login</button>
-        </form>
-
-        <div class="lg-bottom">
-          Don’t have an account?
-          <a href="register-neon.html">Create new account</a>
-        </div>
-
+      <div class="lg-title">
+        <h1>LOGIN</h1>
+        <p>BTX.ONE • Member Panel (Demo)</p>
       </div>
+
+      <form id="loginForm" class="lg-form">
+        <div class="lg-group">
+          <label>Username / Email</label>
+          <div class="lg-field">
+            <input id="loginId" type="text" placeholder="btxuser01 or you@example.com" required>
+          </div>
+        </div>
+
+        <div class="lg-group">
+          <label>Password</label>
+          <div class="lg-field">
+            <input id="loginPass" type="password" required>
+            <span class="lg-eye" data-target="loginPass">SHOW</span>
+          </div>
+        </div>
+
+        <div class="lg-row">
+          <span>Demo only – no real login.</span>
+          <a href="#">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="lg-btn">Login</button>
+      </form>
+
+      <div class="lg-bottom">
+        Don’t have an account?
+        <a href="register-neon.html">Create new account</a>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <!-- এখানে আর inline script নেই, সব logic app.js এ -->
-  <script src="app.js"></script>
+<script>
+  const STORAGE_USERS = "btx_users_v1";
+  const STORAGE_CURRENT = "btx_current_user_v1";
+
+  function loadUsers(){
+    const raw = localStorage.getItem(STORAGE_USERS);
+    if(!raw) return [];
+    try { return JSON.parse(raw); } catch(e){ return []; }
+  }
+  function saveCurrent(user){
+    localStorage.setItem(STORAGE_CURRENT, JSON.stringify(user));
+  }
+
+  // show/hide password
+  document.querySelectorAll(".lg-eye").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-target");
+      const input = document.getElementById(id);
+      if(!input) return;
+      const isPass = input.type === "password";
+      input.type = isPass ? "text" : "password";
+      btn.textContent = isPass ? "HIDE" : "SHOW";
+    });
+  });
+
+  const lgForm = document.getElementById("loginForm");
+  lgForm.addEventListener("submit", (e)=>{
+    e.preventDefault();
+
+    const id  = document.getElementById("loginId").value.trim().toLowerCase();
+    const pw  = document.getElementById("loginPass").value;
+
+    if(!id || !pw){
+      alert("❗ Username/Email এবং Password দিন।");
+      return;
+    }
+
+    const users = loadUsers();
+    const user = users.find(u =>
+      (u.username === id || u.email === id) && u.password === pw
+    );
+
+    if(!user){
+      alert("❌ Username/Email বা Password ভুল।");
+      return;
+    }
+
+    saveCurrent(user);
+    alert("✅ Demo login success!");
+    window.location.href = "dashboard.html";
+  });
+</script>
 </body>
 </html>
