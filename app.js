@@ -1,4 +1,4 @@
-// Simple demo stats – পরে এগুলো backend থেকে আসবে
+// =============== DEMO DATA ===============
 let demoStats = {
   members: 1324,
   deposit: 25340,
@@ -22,25 +22,40 @@ function sel(id) {
   return document.getElementById(id);
 }
 
+// =============== RENDER STATS ===============
 function renderStats() {
-  sel("statMembers").textContent = demoStats.members.toLocaleString();
-  sel("statDeposit").textContent = `$${demoStats.deposit.toLocaleString()}`;
-  sel("statPayout").textContent = `$${demoStats.payout.toLocaleString()}`;
+  if (sel("statMembers"))
+    sel("statMembers").textContent = demoStats.members.toLocaleString();
+  if (sel("statDeposit"))
+    sel("statDeposit").textContent = `$${demoStats.deposit.toLocaleString()}`;
+  if (sel("statPayout"))
+    sel("statPayout").textContent = `$${demoStats.payout.toLocaleString()}`;
 
-  sel("demoBalance").textContent = `$${demoStats.balance.toFixed(2)}`;
-  sel("demoSelf").textContent = `$${demoStats.self}`;
-  sel("demoROI").textContent = `$${demoStats.roi.toFixed(2)}`;
-  sel("demoSponsor").textContent = `$${demoStats.sponsor}`;
-  sel("demoGen").textContent = `$${demoStats.generation}`;
+  if (sel("demoBalance"))
+    sel("demoBalance").textContent = `$${demoStats.balance.toFixed(2)}`;
+  if (sel("demoSelf"))
+    sel("demoSelf").textContent = `$${demoStats.self}`;
+  if (sel("demoROI"))
+    sel("demoROI").textContent = `$${demoStats.roi.toFixed(2)}`;
+  if (sel("demoSponsor"))
+    sel("demoSponsor").textContent = `$${demoStats.sponsor}`;
+  if (sel("demoGen"))
+    sel("demoGen").textContent = `$${demoStats.generation}`;
 
-  sel("dbBalance").textContent = `$${demoStats.balance.toFixed(2)}`;
-  sel("dbDeposit").textContent = `$${demoStats.deposit}`;
-  sel("dbIncome").textContent = `$${demoStats.income}`;
-  sel("dbTeam").textContent = demoStats.team;
+  if (sel("dbBalance"))
+    sel("dbBalance").textContent = `$${demoStats.balance.toFixed(2)}`;
+  if (sel("dbDeposit"))
+    sel("dbDeposit").textContent = `$${demoStats.deposit}`;
+  if (sel("dbIncome"))
+    sel("dbIncome").textContent = `$${demoStats.income}`;
+  if (sel("dbTeam")) sel("dbTeam").textContent = demoStats.team;
 }
 
+// =============== TABLE RENDER ===============
 function renderTable() {
   const body = sel("dbTableBody");
+  if (!body) return;
+
   body.innerHTML = "";
   deposits.forEach((d) => {
     const tr = document.createElement("tr");
@@ -54,42 +69,56 @@ function renderTable() {
   });
 }
 
-// Demo registration
-const quickForm = document.getElementById("quickForm");
-if (quickForm) {
-  quickForm.addEventListener("submit", (e) => {
+// =============== REGISTER FORM DEMO ===============
+const regForm = document.getElementById("btxRegisterForm");
+const regMsg = document.getElementById("regMessage");
+
+if (regForm && regMsg) {
+  regForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const formData = new FormData(quickForm);
-    const name = formData.get("name");
-    const username = formData.get("username");
-    const sponsor = formData.get("sponsor") || "None";
 
-    alert(
-      `Demo Account Created!\n\nName: ${name}\nUsername: ${username}\nSponsor: ${sponsor}\n\nFuture: এখানে তুমি Real backend connect করে Registration save করবে।`
-    );
-    quickForm.reset();
+    const formData = new FormData(regForm);
+    const name = formData.get("full_name");
+    const user = formData.get("username");
+    const sponsor = formData.get("sponsor_username") || "None";
+
+    regMsg.className = "reg-alert success";
+    regMsg.style.display = "block";
+    regMsg.innerText =
+      `✔ Demo Registration Completed\n\n` +
+      `Full Name: ${name}\n` +
+      `Username: ${user}\n` +
+      `Sponsor: ${sponsor}\n\n` +
+      `এই ফর্ম শুধু ফ্রন্টএন্ড ডেমো – কোনো ডাটাবেজে সেভ হচ্ছে না।`;
+
+    regForm.reset();
   });
 }
 
-// Scroll from hero to packages
-const btnGetStarted = document.getElementById("btnGetStarted");
-if (btnGetStarted) {
-  btnGetStarted.addEventListener("click", () => {
-    document.getElementById("packages").scrollIntoView({ behavior: "smooth" });
+// =============== HERO BUTTONS / NAV ===============
+const heroPrimaryBtn = document.querySelector(".hero .btn-primary");
+if (heroPrimaryBtn) {
+  heroPrimaryBtn.addEventListener("click", () => {
+    const regSection = document.getElementById("register");
+    if (regSection) {
+      regSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
-// Buy buttons demo – শুধু demo calculation
+// package buy demo
 document.querySelectorAll(".buy-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     const amount = Number(btn.dataset.amount);
+    const title = btn.parentElement.querySelector("h3").textContent;
+
     demoStats.deposit += amount;
-    demoStats.balance += amount * 0.3; // demo only
+    demoStats.balance += amount * 0.3; // demo calculation
     demoStats.income += amount * 0.12;
 
     deposits.push({
       member: "You",
-      pkg: `$${amount} Package`,
+      pkg: title,
       amount,
       date: new Date().toISOString().slice(0, 10)
     });
@@ -98,19 +127,19 @@ document.querySelectorAll(".buy-btn").forEach((btn) => {
     renderTable();
 
     alert(
-      `Demo Deposit Success!\n\nAmount: $${amount}\nPackage: ${btn.parentElement.querySelector("h3").textContent}\n\nFuture: এখানে USDT / Wallet Payment connect হবে।`
+      `Demo Deposit Success!\n\nAmount: $${amount}\nPackage: ${title}\n\nFuture এ এখানে real USDT/Wallet payment connect হবে।`
     );
   });
 });
 
-// Nav login demo
-const navLogin = document.getElementById("navLogin");
-if (navLogin) {
-  navLogin.addEventListener("click", () => {
-    alert("Demo Login Only – future এ এখানে real Login / OTP / Wallet Connect হবে।");
+// NAV login demo
+const navLoginBtn = document.querySelector(".btn-outline");
+if (navLoginBtn) {
+  navLoginBtn.addEventListener("click", () => {
+    alert("Demo Login Only – later এখানে real Login form / wallet connect হবে।");
   });
 }
 
-// Initial render
+// =============== INIT ===============
 renderStats();
 renderTable();
