@@ -16,7 +16,7 @@
     }
     a{color:#38bdf8;text-decoration:none}
 
-    /* 🔹 TOP HEADER + LOGO (GLOBAL STYLE) */
+    /* 🔹 TOP HEADER + LOGO */
     .top-header{
       width:100%;
       max-width:900px;
@@ -43,6 +43,7 @@
       color:transparent;
     }
 
+    /* 🔹 CARD WRAPPER */
     .rn-wrap{
       width:100%;
       max-width:520px;
@@ -51,7 +52,7 @@
     .rn-card{
       position:relative;
       border-radius:32px;
-      padding:26px 22px 18px;
+      padding:26px 22px 22px;
       background:linear-gradient(145deg,rgba(12,20,46,.98),rgba(15,23,42,.96));
       box-shadow:
         0 0 0 2px rgba(132,204,22,.8),
@@ -69,16 +70,19 @@
     }
     .rn-inner{position:relative;z-index:1;}
 
+    /* 🔹 TITLE */
     .rn-title{text-align:center;margin-bottom:18px;}
     .rn-title h1{
-      font-size:24px;
-      letter-spacing:.28em;
+      font-size:26px;
+      letter-spacing:.22em;
       text-transform:uppercase;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      align-items:center;
     }
-    .rn-title p{
-      font-size:12px;
-      color:#a5b4fc;
-      margin-top:4px;
+    .rn-title h1 span.icon{
+      font-size:30px;
     }
 
     .rn-form{
@@ -86,6 +90,7 @@
       flex-direction:column;
       gap:10px;
     }
+
     .rn-row{
       display:flex;
       gap:10px;
@@ -102,7 +107,7 @@
     .rn-field{
       position:relative;
       border-radius:999px;
-      padding:8px 14px 8px 34px;   /* আইকনের জন্য left বেশি */
+      padding:8px 14px;
       background:rgba(15,23,42,.98);
       box-shadow:
         0 0 0 2px rgba(190,242,100,.8),
@@ -122,17 +127,6 @@
       color:#e5f0ff;
     }
 
-    /* 🔹 ইনপুট আইকন */
-    .rn-icon{
-      position:absolute;
-      left:12px;
-      top:50%;
-      transform:translateY(-50%);
-      font-size:14px;
-      opacity:.85;
-      pointer-events:none;
-    }
-
     .rn-eye{
       position:absolute;
       right:14px;
@@ -146,6 +140,15 @@
       user-select:none;
     }
 
+    /* Password hints */
+    .hint{
+      display:block;
+      font-size:10px;
+      margin-top:3px;
+    }
+    .hint-ok{color:#4ade80;}
+    .hint-bad{color:#f97373;}
+
     .rn-terms{
       display:flex;
       align-items:center;
@@ -155,6 +158,7 @@
       margin-top:4px;
     }
 
+    /* 🔥 UPDATED REGISTER BUTTON */
     .rn-btn{
       margin-top:12px;
       width:100%;
@@ -165,40 +169,25 @@
       font-weight:600;
       text-transform:uppercase;
       letter-spacing:.18em;
-      background:linear-gradient(135deg,#4ade80,#22c55e);
-      color:#022c22;
+      background:#000;           /* Black */
+      color:#facc15;             /* Yellow */
       cursor:pointer;
-      box-shadow:0 22px 60px rgba(74,222,128,.9);
-      transition:transform .1s,box-shadow .1s;
+      box-shadow:0 22px 60px rgba(0,0,0,.7);
     }
     .rn-btn:hover{
       transform:translateY(-1px);
-      box-shadow:0 26px 80px rgba(74,222,128,1);
+      box-shadow:0 0 20px #facc15;
     }
 
     .rn-bottom{
-      margin-top:14px;
+      margin-top:10px;
       text-align:center;
       font-size:11px;
-      background:#020617;
-      color:#facc15;              /* হলুদ টেক্সট */
-      padding:7px 12px;
-      border-radius:999px;
+      color:#9ca3af;
     }
-    .rn-bottom a{color:#38bdf8;}
-
-    /* 🔹 ছোট message টেক্সট (password strong / match ইত্যাদি) */
-    .hint{
-      display:block;
-      font-size:10px;
-      margin-top:3px;
-      min-height:13px;
-    }
-    .hint-ok{color:#4ade80;}
-    .hint-bad{color:#fb7185;}
 
     @media(max-width:480px){
-      .rn-card{padding:22px 18px 16px;}
+      .rn-card{padding:22px 18px;}
       .rn-row{flex-direction:column;}
       .top-header{
         justify-content:center;
@@ -208,7 +197,8 @@
 </head>
 
 <body>
-  <!-- 🔹 Global Logo + Title -->
+
+  <!-- 🔹 Global Header -->
   <header class="top-header">
     <img src="images/logo.png" alt="BTX Logo" class="logo-main">
     <h1 class="site-title">BTX.ONE</h1>
@@ -219,303 +209,98 @@
       <div class="rn-glow"></div>
       <div class="rn-inner">
 
+        <!-- 🔹 REGISTER TITLE WITH ORIGINAL ICON -->
         <div class="rn-title">
-          <h1>REGISTER</h1>
-          <p>BTX.ONE • USDT MLM • Demo</p>
+          <h1><span class="icon">📝</span> REGISTER</h1>
         </div>
 
+        <!-- FORM -->
         <form id="registerForm" class="rn-form">
-          <!-- Full Name -->
+
           <div>
             <label class="rn-label">Full Name</label>
-            <div class="rn-field">
-              <span class="rn-icon">👤</span>
-              <input id="fullName" name="fullName" type="text" required />
-            </div>
+            <div class="rn-field"><input id="fullName" required></div>
           </div>
 
-          <!-- Username + Email -->
           <div class="rn-row">
             <div>
               <label class="rn-label">Username</label>
-              <div class="rn-field">
-                <span class="rn-icon">🆔</span>
-                <input id="username" name="username" type="text" required />
-              </div>
+              <div class="rn-field"><input id="username" required></div>
             </div>
             <div>
               <label class="rn-label">Email</label>
-              <div class="rn-field">
-                <span class="rn-icon">✉️</span>
-                <input id="email" name="email" type="email" required />
-              </div>
+              <div class="rn-field"><input id="email" type="email" required></div>
             </div>
           </div>
 
-          <!-- Country + Mobile -->
           <div class="rn-row">
             <div>
               <label class="rn-label">Select Country</label>
               <div class="rn-field">
-                <span class="rn-icon">🌍</span>
-                <select id="country" name="country" required>
+                <select id="country" required>
                   <option value="">Select Country</option>
                   <option>Bangladesh</option>
                   <option>India</option>
                   <option>Nepal</option>
                   <option>Qatar</option>
-                  <option>Kuwait</option>
                   <option>Singapore</option>
-                  <option>United Arab Emirates</option>
-                  <option>United States</option>
-                  <option>United Kingdom</option>
+                  <option>UAE</option>
+                  <option>USA</option>
                 </select>
               </div>
             </div>
+
             <div>
               <label class="rn-label">Mobile Number</label>
-              <div class="rn-field">
-                <span class="rn-icon">📱</span>
-                <input id="mobile" name="mobile" type="text" placeholder="+880…" required />
-              </div>
+              <div class="rn-field"><input id="mobile" required></div>
             </div>
           </div>
 
-          <!-- Password + Re-enter -->
           <div class="rn-row">
             <div>
               <label class="rn-label">Password</label>
               <div class="rn-field">
-                <span class="rn-icon">🔒</span>
-                <input id="password" name="password" type="password" required />
+                <input id="password" type="password" required>
                 <span class="rn-eye" data-target="password">SHOW</span>
               </div>
               <small id="passStrength" class="hint"></small>
             </div>
+
             <div>
               <label class="rn-label">Re-enter Password</label>
               <div class="rn-field">
-                <span class="rn-icon">🔁</span>
-                <input id="password2" name="password2" type="password" required />
+                <input id="password2" type="password" required>
                 <span class="rn-eye" data-target="password2">SHOW</span>
               </div>
               <small id="passMatch" class="hint"></small>
             </div>
           </div>
 
-          <!-- Referral -->
           <div>
             <label class="rn-label">Referral Code (optional)</label>
             <div class="rn-field">
-              <span class="rn-icon">🎯</span>
-              <input id="refCode" name="refCode" type="text" placeholder="Sponsor / referral code" />
+              <input id="refCode">
             </div>
           </div>
 
-          <!-- Terms -->
           <label class="rn-terms">
-            <input id="terms" type="checkbox" required />
-            <span>I accept the Terms &amp; Conditions (demo)</span>
+            <input id="terms" type="checkbox" required>
+            <span>I accept the Terms & Conditions (demo)</span>
           </label>
 
-          <button type="submit" class="rn-btn">REGISTER</button>
+          <button class="rn-btn">REGISTER</button>
+
         </form>
 
         <div class="rn-bottom">
-          Already have an account?
-          <a href="login.html">Login</a>
+          Already have an account? <a href="login.html">Login</a>
         </div>
 
       </div>
     </div>
   </div>
 
-  <!-- 🔹 JS – registration + localStorage + password meter -->
-<script>
-  const STORAGE_USERS   = "btx_users_v1";
-  const STORAGE_CURRENT = "btx_current_user_v1";
+<script src="app.js"></script>
 
-  function loadUsers(){
-    const raw = localStorage.getItem(STORAGE_USERS);
-    if(!raw) return [];
-    try { return JSON.parse(raw); } catch(e){ return []; }
-  }
-  function saveUsers(users){
-    localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
-  }
-
-  // show / hide password
-  document.querySelectorAll(".rn-eye").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const id = btn.getAttribute("data-target");
-      const input = document.getElementById(id);
-      if(!input) return;
-      const isPass = input.type === "password";
-      input.type = isPass ? "text" : "password";
-      btn.textContent = isPass ? "HIDE" : "SHOW";
-    });
-  });
-
-  // 🔹 Password strength + match live hint
-  const passInput  = document.getElementById("password");
-  const pass2Input = document.getElementById("password2");
-  const strengthEl = document.getElementById("passStrength");
-  const matchEl    = document.getElementById("passMatch");
-
-  function checkStrength(p){
-    let score = 0;
-    if(p.length >= 4)  score++;
-    if(p.length >= 8)  score++;
-    if(/[0-9]/.test(p) && /[A-Za-z]/.test(p)) score++;
-
-    if(!p){
-      strengthEl.textContent = "";
-      strengthEl.className = "hint";
-    }else if(score === 1){
-      strengthEl.textContent = "Password: Weak";
-      strengthEl.className = "hint hint-bad";
-    }else if(score === 2){
-      strengthEl.textContent = "Password: Medium";
-      strengthEl.className = "hint hint-ok";
-    }else{
-      strengthEl.textContent = "Password: Strong";
-      strengthEl.className = "hint hint-ok";
-    }
-  }
-
-  function checkMatch(p1,p2){
-    if(!p2){
-      matchEl.textContent = "";
-      matchEl.className = "hint";
-      return;
-    }
-    if(p1 === p2){
-      matchEl.textContent = "✅ Password matched";
-      matchEl.className = "hint hint-ok";
-    }else{
-      matchEl.textContent = "❌ Password not match";
-      matchEl.className = "hint hint-bad";
-    }
-  }
-
-  passInput.addEventListener("input", ()=>{
-    const p1 = passInput.value;
-    const p2 = pass2Input.value;
-    checkStrength(p1);
-    checkMatch(p1,p2);
-  });
-  pass2Input.addEventListener("input", ()=>{
-    const p1 = passInput.value;
-    const p2 = pass2Input.value;
-    checkMatch(p1,p2);
-  });
-
-  const regForm = document.getElementById("registerForm");
-
-  regForm.addEventListener("submit", (e)=>{
-    e.preventDefault();
-
-    const fullName = document.getElementById("fullName").value.trim();
-    const username = document.getElementById("username").value.trim().toLowerCase();
-    const email    = document.getElementById("email").value.trim().toLowerCase();
-    const country  = document.getElementById("country").value;
-    const mobile   = document.getElementById("mobile").value.trim();
-    const pass1    = passInput.value;
-    const pass2    = pass2Input.value;
-    const refCodeRaw = document.getElementById("refCode").value.trim();
-    const refCode  = refCodeRaw.toLowerCase();
-    const termsChk = document.getElementById("terms");
-
-    if(!fullName || !username || !email || !country || !mobile){
-      alert("❗ সবগুলো required ফিল্ড পূরণ করুন।");
-      return;
-    }
-    if(!termsChk.checked){
-      alert("❗ Terms & Conditions এ টিক দিন।");
-      return;
-    }
-    if(pass1.length < 4){
-      alert("🔐 Password কমপক্ষে ৪ অক্ষরের দিন।");
-      return;
-    }
-    if(pass1 !== pass2){
-      alert("❌ Password এবং Re-enter Password মিলছে না।");
-      return;
-    }
-
-    const users = loadUsers();
-
-    if(users.some(u=>u.username === username)){
-      alert("⚠ এই username আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
-      return;
-    }
-    if(users.some(u=>u.email === email)){
-      alert("⚠ এই email আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
-      return;
-    }
-
-    // sponsor খুঁজে বের করি (optional)
-    let sponsorUser = null;
-    if(refCode){
-      sponsorUser = users.find(u=>u.username === refCode);
-      if(!sponsorUser){
-        alert("⚠ এই sponsor / referral username পাওয়া যায়নি। আগে sponsor ঠিক করুন অথবা ফাঁকা রাখুন।");
-        return;
-      }
-    }
-
-    // প্রথম user = admin, বাকিরা member
-    const role = users.length === 0 ? "admin" : "member";
-
-    const newUser = {
-      id: Date.now(),
-      fullName,
-      username,
-      email,
-      country,
-      mobile,
-      refCode: refCodeRaw,
-      sponsor_username: sponsorUser ? sponsorUser.username : "",
-      password: pass1,
-      role,
-      balance: 0,
-      depositTotal: 0,
-      directIncome: 0,
-      teamIncome: 0,
-      teamCount: 0,
-      createdAt: new Date().toISOString()
-    };
-
-    users.push(newUser);
-
-    // sponsor থাকলে তার teamCount++ করি
-    if(sponsorUser){
-      sponsorUser.teamCount = (sponsorUser.teamCount || 0) + 1;
-    }
-
-    saveUsers(users);
-
-    if(role === "admin"){
-      alert("✅ Registration successful! আপনি এখন admin হিসেবে সেট হয়েছেন। এবার Login করুন।");
-    }else{
-      alert("✅ Registration successful! এখন এই username/email + password দিয়ে Login করতে পারবেন।");
-    }
-
-    regForm.reset();
-    window.location.href = "login.html";
-  });
-
-  // যদি URL এ ?ref= থাকে তাহলে Auto set
-  (function presetRefCode(){
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get("ref");
-    if(ref){
-      const input = document.getElementById("refCode");
-      if(input && !input.value){
-        input.value = ref;
-      }
-    }
-  })();
-</script>
 </body>
 </html>
