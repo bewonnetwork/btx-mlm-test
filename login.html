@@ -187,7 +187,7 @@
 </div>
 
 <script>
-  const STORAGE_USERS = "btx_users_v1";
+  const STORAGE_USERS   = "btx_users_v1";
   const STORAGE_CURRENT = "btx_current_user_v1";
 
   function loadUsers(){
@@ -195,13 +195,10 @@
     if(!raw) return [];
     try { return JSON.parse(raw); } catch(e){ return []; }
   }
-  function saveCurrent(user){
-    localStorage.setItem(STORAGE_CURRENT, JSON.stringify(user));
-  }
 
-  // show/hide password
+  // show / hide password
   document.querySelectorAll(".lg-eye").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
+    btn.addEventListener("click",()=>{
       const id = btn.getAttribute("data-target");
       const input = document.getElementById(id);
       if(!input) return;
@@ -211,37 +208,35 @@
     });
   });
 
-  const lgForm = document.getElementById("loginForm");
-  lgForm.addEventListener("submit", (e)=>{
+  const lgForm = document.getElementById("lgForm");
+  lgForm.addEventListener("submit",e=>{
     e.preventDefault();
+    const usernameRaw = lgForm.username.value.trim().toLowerCase();
+    const pass        = lgForm.password.value;
 
-    const id  = document.getElementById("loginId").value.trim().toLowerCase();
-    const pw  = document.getElementById("loginPass").value;
-
-    if(!id || !pw){
-      alert("❗ Username/Email এবং Password দিন।");
+    if(!usernameRaw || !pass){
+      alert("❗ Username / Email এবং password দিন।");
       return;
     }
 
     const users = loadUsers();
     const user = users.find(u =>
-      (u.username === id || u.email === id) && u.password === pw
+      (u.username === usernameRaw || u.email === usernameRaw) &&
+      u.password === pass
     );
 
     if(!user){
-      alert("❌ Username/Email বা Password ভুল।");
+      alert("❌ Username / Email বা Password ভুল হয়েছে।");
       return;
     }
 
-    saveCurrent(user);
+    // current user save
+    localStorage.setItem(STORAGE_CURRENT, JSON.stringify(user));
 
-    if(user.role === "admin"){
-      alert("✅ Admin login success!");
-      window.location.href = "admin.html";
-    }else{
-      alert("✅ Member login success!");
-      window.location.href = "dashboard.html";
-    }
+    alert("✅ Demo login success! বাস্তবে এখন শুধু ফ্রন্টএন্ড টেস্ট হচ্ছে।");
+
+    // login হলে dashboard এ পাঠাই
+    window.location.href = "dashboard.html";
   });
 </script>
 </body>

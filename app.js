@@ -1,225 +1,132 @@
-// BTX.ONE demo auth system using localStorage
+// Common storage keys
+const STORAGE_USERS   = "btx_users_v1";
+const STORAGE_CURRENT = "btx_current_user_v1";
 
-const STORAGE_KEY_USERS = "btx_users";
-const STORAGE_KEY_CURRENT = "btx_current_user";
+// Level commission (unilevel): 1st = 10%, 2nd = 3%, 3rd = 2%, 4th–5th = 1%
+const LEVEL_PERCENTS = [0.10, 0.03, 0.02, 0.01, 0.01];
 
-// ---------- Common helpers ----------
-function loadUsers() {
-  const raw = localStorage.getItem(STORAGE_KEY_USERS);
-  if (!raw) return [];
-  try {
-    return JSON.parse(raw);
-  } catch (e) {
-    return [];
-  }
+function loadUsers(){
+  const raw = localStorage.getItem(STORAGE_USERS);
+  if(!raw) return [];
+  try { return JSON.parse(raw); } catch(e){ return []; }
+}
+function saveUsers(users){
+  localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
 }
 
-function saveUsers(users) {
-  localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(users));
+function getCurrentUser(){
+  const raw = localStorage.getItem(STORAGE_CURRENT);
+  if(!raw) return null;
+  try { return JSON.parse(raw); } catch(e){ return null; }
+}
+function setCurrentUser(user){
+  localStorage.setItem(STORAGE_CURRENT, JSON.stringify(user));
 }
 
-function setCurrentUser(user) {
-  localStorage.setItem(STORAGE_KEY_CURRENT, JSON.stringify(user));
-}
+// -------- HOME / PACKAGES (index.html) ----------
+(function initPackages(){
+  const buttons = document.querySelectorAll(".buy-btn");
+  if(!buttons.length) return; // অন্য পেইজে হলে স্কিপ
 
-function getCurrentUser() {
-  const raw = localStorage.getItem(STORAGE_KEY_CURRENT);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw);
-  } catch (e) {
-    return null;
-  }
-}
+  buttons.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const amount = Number(btn.dataset.amount || "0");
+      if(!amount) return;
 
-function logoutUser() {
-  localStorage.removeItem(STORAGE_KEY_CURRENT);
-}
+      const current = getCurrentUser();
+      if(!current){
+        alert("🔐 প্রথমে Login করুন, তারপর package Buy (demo) করবেন।");
+        window.location.href = "login.html";
+        return;
+      }
 
-// ---------- Page boot ----------
-document.addEventListener("DOMContentLoaded", () => {
-  const page = document.body.dataset.page;
-  if (page === "register") initRegisterPage();
-  if (page === "login") initLoginPage();
-  if (page === "dashboard") initDashboardPage();
-});
+      let users = loadUsers();
+      const meIndex = users.findIndex(u => u.id === current.id);
+      if(meIndex === -1){
+        alert("User data পাওয়া যায়নি, আবার Login করুন।");
+        window.location.href = "login.html";
+        return;
+      }
 
-// ---------- Register page ----------
-function initRegisterPage() {
-  const form = document.getElementById("rnForm");
-  if (!form) return;
+      // ---- নিজের deposit আপডেট ----
+      const me = users[meIndex];
+      me.depositTotal = (me.depositTotal || 0) + amount;
+      me.balance      = (me.balance || 0) + amount; // deposit wallet এ যোগ
+      users[meIndex]  = me;
 
-  // password show/hide
-  document.querySelectorAll(".rn-eye").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.getAttribute("data-target");
-      const input = document.getElementById(id);
-      if (!input) return;
-      const isPass = input.type === "password";
-      input.type = isPass ? "text" : "password";
-      btn.textContent = isPass ? "HIDE" : "SHOW";
+      // ---- Sponsor chain commission ----
+      let sponsorUsername = me.sponsor_username || "";
+      let level = 0;
+      while(sponsorUsername && level < LEVEL_PERCENTS.length){
+        const sIndex = users.findIndex(u => u.username === sponsorUsername);
+        if(sIndex === -1) break;
+
+        const sponsor = users[sIndex];
+        const percent = LEVEL_PERCENTS[level];
+        const commission = amount * percent;
+
+        if(level === 0){
+          sponsor.directIncome = (sponsor.directIncome || 0) + commission;
+        }else{
+          sponsor.teamIncome = (sponsor.teamIncome || 0) + commission;
+        }
+        sponsor.balance = (sponsor.balance || 0) + commission;
+
+        users[sIndex] = sponsor;
+        sponsorUsername = sponsor.sponsor_username || "";
+        level++;
+      }
+
+      saveUsers(users);
+      setCurrentUser(me);
+
+      alert("✅ Demo deposit complete: $" + amount +
+        " যোগ হয়েছে। Sponsor chain এ demo কমিশন হিসাব করা হয়েছে।");
+
+      // চাইলে সরাসরি dashboard এ নিতে পারো
+      // window.location.href = "dashboard.html";
     });
   });
+})();
 
-  form.addEventListener("submit", e => {
-    e.preventDefault();
+// -------- ADMIN PANEL (admin.html) ----------
+(function initAdmin(){
+  const tableBody = document.getElementById("adminUsersBody");
+  if(!tableBody) return; // admin page না হলে স্কিপ
 
-    const data = new FormData(form);
-    const full_name = (data.get("full_name") || "").trim();
-    const usernameRaw = (data.get("username") || "").trim();
-    const username = usernameRaw.toLowerCase();
-    const email = (data.get("email") || "").trim().toLowerCase();
-    const country = data.get("country") || "";
-    const mobile = (data.get("mobile") || "").trim();
-    const ref_code = (data.get("ref_code") || "").trim();
-    const pass1 = data.get("password") || "";
-    const pass2 = data.get("password2") || "";
-
-    if (!full_name || !usernameRaw || !email || !country || !mobile) {
-      alert("❗ সবগুলো required ফিল্ড পূরণ করুন।");
-      return;
-    }
-
-    if (pass1.length < 4) {
-      alert("🔐 Password কমপক্ষে ৪ অক্ষরের দিন।");
-      return;
-    }
-
-    if (pass1 !== pass2) {
-      alert("❌ Password এবং Re-enter Password মিলছে না।");
-      return;
-    }
-
-    const users = loadUsers();
-    if (users.some(u => u.username === username)) {
-      alert("⚠ এই username আগে থেকেই রেজিস্টার করা আছে। অন্যটা চেষ্টা করুন।");
-      return;
-    }
-    if (users.some(u => u.email === email)) {
-      alert("⚠ এই email আগে থেকেই রেজিস্টার করা আছে। অন্যটা চেষ্টা করুন।");
-      return;
-    }
-
-    const newUser = {
-      full_name,
-      username,
-      email,
-      country,
-      mobile,
-      ref_code,
-      password: pass1
-    };
-
-    users.push(newUser);
-    saveUsers(users);
-
-    alert("✅ Demo registration complete! এখন তুমি এই username + password দিয়ে login করতে পারবে।");
-    form.reset();
+  const current = getCurrentUser();
+  if(!current || current.role !== "admin"){
+    alert("এই পেইজ শুধুই admin demo এর জন্য। আগে admin হিসেবে Login করুন।");
     window.location.href = "login.html";
-  });
-}
-
-// ---------- Login page ----------
-function initLoginPage() {
-  const form = document.getElementById("lgForm");
-  if (!form) return;
-
-  // show/hide password
-  document.querySelectorAll(".lg-eye").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.getAttribute("data-target");
-      const input = document.getElementById(id);
-      if (!input) return;
-      const isPass = input.type === "password";
-      input.type = isPass ? "text" : "password";
-      btn.textContent = isPass ? "HIDE" : "SHOW";
-    });
-  });
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-
-    const data = new FormData(form);
-    const idRaw = (data.get("username") || "").trim();
-    const id = idRaw.toLowerCase();
-    const password = data.get("password") || "";
-
-    if (!id || !password) {
-      alert("❗ Username/Email এবং Password দিন।");
-      return;
-    }
-
-    const users = loadUsers();
-    const user = users.find(
-      u =>
-        (u.username === id || u.email === id) &&
-        u.password === password
-    );
-
-    if (!user) {
-      alert("❌ Username/Email বা Password ভুল। আবার চেষ্টা করুন।");
-      return;
-    }
-
-    setCurrentUser(user);
-    alert("✅ Demo login success!");
-    window.location.href = "dashboard.html";
-  });
-}
-
-// ---------- Dashboard page ----------
-function initDashboardPage() {
-  const user = getCurrentUser();
-
-  const titleEl = document.getElementById("dbUserTitle");
-  const infoEl = document.getElementById("dbUserInfo");
-  const guestEl = document.getElementById("dbGuest");
-  const logoutBtn = document.getElementById("logoutBtn");
-
-  if (!user) {
-    if (guestEl) guestEl.style.display = "block";
-    if (titleEl) titleEl.textContent = "Guest Dashboard (Demo)";
-    if (infoEl) {
-      infoEl.innerHTML =
-        '<div>Welcome, <strong>Guest</strong></div><div>ID: N/A • Rank: Starter</div>';
-    }
-  } else {
-    if (guestEl) guestEl.style.display = "none";
-    if (titleEl) titleEl.textContent = user.full_name + " – Dashboard";
-    if (infoEl) {
-      infoEl.innerHTML =
-        <div>Welcome, <strong>${user.username}</strong></div> +
-        <div>Country: ${user.country || "N/A"} • Mobile: ${user.mobile || "N/A"}</div>;
-    }
+    return;
   }
 
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      logoutUser();
-      alert("🔓 Logged out (demo).");
-      window.location.href = "login.html";
-    });
-  }
+  const users = loadUsers();
 
-  // demo deposit table
-  const body = document.getElementById("dTableBody");
-  if (body) {
-    const demoDeposits = [
-      { member: "btxuser01", pkg: "$100 Pro", amount: 100, roi: "1.3%", date: "2025-11-20" },
-      { member: "btxuser02", pkg: "$500 Elite", amount: 500, roi: "1.5%", date: "2025-11-19" },
-      { member: "btxuser03", pkg: "$20 Starter", amount: 20, roi: "1.1%", date: "2025-11-19" },
-      { member: "btxuser04", pkg: "$100 Pro", amount: 100, roi: "1.2%", date: "2025-11-18" }
-    ];
-    demoDeposits.forEach(row => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${row.member}</td>
-        <td>${row.pkg}</td>
-        <td>$${row.amount.toFixed(2)}</td>
-        <td>${row.roi}</td>
-        <td>${row.date}</td>
-      `;
-      body.appendChild(tr);
-    });
-  }
-}
+  tableBody.innerHTML = "";
+  users.forEach((u, idx)=>{
+    const tr = document.createElement("tr");
+
+    const joined = u.createdAt ? new Date(u.createdAt).toLocaleString() : "-";
+    const refLink =
+      window.location.origin +
+      "/register-neon.html?ref=" +
+      encodeURIComponent(u.username || "");
+
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td>${u.fullName || "-"}</td>
+      <td>${u.username}</td>
+      <td>${u.role}</td>
+      <td>${u.sponsor_username || "-"}</td>
+      <td>${u.depositTotal?.toFixed ? u.depositTotal.toFixed(2) : "0.00"}</td>
+      <td>${u.directIncome?.toFixed ? u.directIncome.toFixed(2) : "0.00"}</td>
+      <td>${u.teamIncome?.toFixed ? u.teamIncome.toFixed(2) : "0.00"}</td>
+      <td>${u.balance?.toFixed ? u.balance.toFixed(2) : "0.00"}</td>
+      <td>${u.teamCount || 0}</td>
+      <td>${joined}</td>
+      <td><input type="text" value="${refLink}" readonly style="width:160px;font-size:10px;"></td>
+    `;
+    tableBody.appendChild(tr);
+  });
+})();
