@@ -51,7 +51,7 @@
     .rn-card{
       position:relative;
       border-radius:32px;
-      padding:26px 22px 22px;
+      padding:26px 22px 18px;
       background:linear-gradient(145deg,rgba(12,20,46,.98),rgba(15,23,42,.96));
       box-shadow:
         0 0 0 2px rgba(132,204,22,.8),
@@ -98,10 +98,11 @@
       margin-bottom:4px;
       display:block;
     }
+
     .rn-field{
       position:relative;
       border-radius:999px;
-      padding:8px 14px;
+      padding:8px 14px 8px 34px;   /* আইকনের জন্য left বেশি */
       background:rgba(15,23,42,.98);
       box-shadow:
         0 0 0 2px rgba(190,242,100,.8),
@@ -119,6 +120,17 @@
     .rn-field select option{
       background:#020617;
       color:#e5f0ff;
+    }
+
+    /* 🔹 ইনপুট আইকন */
+    .rn-icon{
+      position:absolute;
+      left:12px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:14px;
+      opacity:.85;
+      pointer-events:none;
     }
 
     .rn-eye{
@@ -165,23 +177,28 @@
     }
 
     .rn-bottom{
-      margin-top:10px;
+      margin-top:14px;
       text-align:center;
       font-size:11px;
-      color:#9ca3af;
+      background:#020617;
+      color:#facc15;              /* হলুদ টেক্সট */
+      padding:7px 12px;
+      border-radius:999px;
     }
+    .rn-bottom a{color:#38bdf8;}
 
     /* 🔹 ছোট message টেক্সট (password strong / match ইত্যাদি) */
     .hint{
       display:block;
       font-size:10px;
       margin-top:3px;
+      min-height:13px;
     }
     .hint-ok{color:#4ade80;}
-    .hint-bad{color:#f97373;}
+    .hint-bad{color:#fb7185;}
 
     @media(max-width:480px){
-      .rn-card{padding:22px 18px;}
+      .rn-card{padding:22px 18px 16px;}
       .rn-row{flex-direction:column;}
       .top-header{
         justify-content:center;
@@ -208,32 +225,39 @@
         </div>
 
         <form id="registerForm" class="rn-form">
+          <!-- Full Name -->
           <div>
             <label class="rn-label">Full Name</label>
             <div class="rn-field">
+              <span class="rn-icon">👤</span>
               <input id="fullName" name="fullName" type="text" required />
             </div>
           </div>
 
+          <!-- Username + Email -->
           <div class="rn-row">
             <div>
               <label class="rn-label">Username</label>
               <div class="rn-field">
+                <span class="rn-icon">🆔</span>
                 <input id="username" name="username" type="text" required />
               </div>
             </div>
             <div>
               <label class="rn-label">Email</label>
               <div class="rn-field">
+                <span class="rn-icon">✉️</span>
                 <input id="email" name="email" type="email" required />
               </div>
             </div>
           </div>
 
+          <!-- Country + Mobile -->
           <div class="rn-row">
             <div>
               <label class="rn-label">Select Country</label>
               <div class="rn-field">
+                <span class="rn-icon">🌍</span>
                 <select id="country" name="country" required>
                   <option value="">Select Country</option>
                   <option>Bangladesh</option>
@@ -251,15 +275,18 @@
             <div>
               <label class="rn-label">Mobile Number</label>
               <div class="rn-field">
+                <span class="rn-icon">📱</span>
                 <input id="mobile" name="mobile" type="text" placeholder="+880…" required />
               </div>
             </div>
           </div>
 
+          <!-- Password + Re-enter -->
           <div class="rn-row">
             <div>
               <label class="rn-label">Password</label>
               <div class="rn-field">
+                <span class="rn-icon">🔒</span>
                 <input id="password" name="password" type="password" required />
                 <span class="rn-eye" data-target="password">SHOW</span>
               </div>
@@ -268,6 +295,7 @@
             <div>
               <label class="rn-label">Re-enter Password</label>
               <div class="rn-field">
+                <span class="rn-icon">🔁</span>
                 <input id="password2" name="password2" type="password" required />
                 <span class="rn-eye" data-target="password2">SHOW</span>
               </div>
@@ -275,13 +303,16 @@
             </div>
           </div>
 
+          <!-- Referral -->
           <div>
             <label class="rn-label">Referral Code (optional)</label>
             <div class="rn-field">
+              <span class="rn-icon">🎯</span>
               <input id="refCode" name="refCode" type="text" placeholder="Sponsor / referral code" />
             </div>
           </div>
 
+          <!-- Terms -->
           <label class="rn-terms">
             <input id="terms" type="checkbox" required />
             <span>I accept the Terms &amp; Conditions (demo)</span>
@@ -325,6 +356,60 @@
     });
   });
 
+  // 🔹 Password strength + match live hint
+  const passInput  = document.getElementById("password");
+  const pass2Input = document.getElementById("password2");
+  const strengthEl = document.getElementById("passStrength");
+  const matchEl    = document.getElementById("passMatch");
+
+  function checkStrength(p){
+    let score = 0;
+    if(p.length >= 4)  score++;
+    if(p.length >= 8)  score++;
+    if(/[0-9]/.test(p) && /[A-Za-z]/.test(p)) score++;
+
+    if(!p){
+      strengthEl.textContent = "";
+      strengthEl.className = "hint";
+    }else if(score === 1){
+      strengthEl.textContent = "Password: Weak";
+      strengthEl.className = "hint hint-bad";
+    }else if(score === 2){
+      strengthEl.textContent = "Password: Medium";
+      strengthEl.className = "hint hint-ok";
+    }else{
+      strengthEl.textContent = "Password: Strong";
+      strengthEl.className = "hint hint-ok";
+    }
+  }
+
+  function checkMatch(p1,p2){
+    if(!p2){
+      matchEl.textContent = "";
+      matchEl.className = "hint";
+      return;
+    }
+    if(p1 === p2){
+      matchEl.textContent = "✅ Password matched";
+      matchEl.className = "hint hint-ok";
+    }else{
+      matchEl.textContent = "❌ Password not match";
+      matchEl.className = "hint hint-bad";
+    }
+  }
+
+  passInput.addEventListener("input", ()=>{
+    const p1 = passInput.value;
+    const p2 = pass2Input.value;
+    checkStrength(p1);
+    checkMatch(p1,p2);
+  });
+  pass2Input.addEventListener("input", ()=>{
+    const p1 = passInput.value;
+    const p2 = pass2Input.value;
+    checkMatch(p1,p2);
+  });
+
   const regForm = document.getElementById("registerForm");
 
   regForm.addEventListener("submit", (e)=>{
@@ -335,8 +420,8 @@
     const email    = document.getElementById("email").value.trim().toLowerCase();
     const country  = document.getElementById("country").value;
     const mobile   = document.getElementById("mobile").value.trim();
-    const pass1    = document.getElementById("password").value;
-    const pass2    = document.getElementById("password2").value;
+    const pass1    = passInput.value;
+    const pass2    = pass2Input.value;
     const refCodeRaw = document.getElementById("refCode").value.trim();
     const refCode  = refCodeRaw.toLowerCase();
     const termsChk = document.getElementById("terms");
@@ -393,7 +478,6 @@
       sponsor_username: sponsorUser ? sponsorUser.username : "",
       password: pass1,
       role,
-      // income + wallet ফিল্ড
       balance: 0,
       depositTotal: 0,
       directIncome: 0,
@@ -418,7 +502,6 @@
     }
 
     regForm.reset();
-    // Registration শেষে সরাসরি login page
     window.location.href = "login.html";
   });
 
