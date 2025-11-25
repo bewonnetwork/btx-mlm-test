@@ -4,6 +4,10 @@
   <meta charset="utf-8" />
   <title>BTX.ONE – Member Dashboard (Demo)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Chart.js for live charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
     body{
@@ -31,19 +35,13 @@
       align-items:center;
       gap:10px;
     }
-    /* পুরোনো সবুজ B-বক্স আর ব্যবহার করছি না, চাইলে CSS রেখে দাও */
-    .brand-logo{
-      display:none;
-    }
-    /* 🔹 নতুন গোল BTX Logo (images/logo.png) */
     .brand-logo-img{
-      width:46px;
-      height:46px;
-      border-radius:50%;
+      width:52px;
+      height:52px;
+      border-radius:999px;
       object-fit:cover;
-      filter:
-        drop-shadow(0 0 8px rgba(255,255,255,.35))
-        drop-shadow(0 0 18px rgba(34,197,94,.55));
+      box-shadow:0 0 26px rgba(59,130,246,.95);
+      background:#020617;
     }
     .brand-title h1{
       font-size:18px;
@@ -90,7 +88,7 @@
     .dash-card-main{
       position:relative;
       border-radius:26px;
-      padding:18px 18px 20px;
+      padding:18px 18px 22px;
       background:linear-gradient(135deg,rgba(15,23,42,.98),rgba(30,64,175,.96));
       box-shadow:
         0 0 0 2px rgba(56,189,248,.7),
@@ -157,7 +155,7 @@
     /* SUMMARY CARDS */
     .summary-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
       gap:10px;
       margin-bottom:16px;
     }
@@ -173,7 +171,7 @@
       margin-bottom:3px;
     }
     .summary-card h3{
-      font-size:20px;
+      font-size:18px;
       font-weight:700;
     }
     .summary-tag{
@@ -245,7 +243,7 @@
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
       gap:10px;
-      margin-bottom:4px;
+      margin-bottom:16px;
     }
     .info-card{
       border-radius:16px;
@@ -267,6 +265,27 @@
       color:#9ca3af;
     }
 
+    /* CHARTS */
+    .charts-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:12px;
+      margin-bottom:4px;
+    }
+    .chart-card{
+      border-radius:18px;
+      padding:10px 12px 14px;
+      background:rgba(15,23,42,.96);
+      box-shadow:0 0 0 1px rgba(148,163,184,.45);
+    }
+    .chart-card h4{
+      font-size:13px;
+      margin-bottom:4px;
+    }
+    canvas{
+      max-width:100%;
+    }
+
     .note{
       margin-top:8px;
       font-size:10px;
@@ -284,8 +303,8 @@
     <!-- HEADER -->
     <header class="dash-header">
       <div class="brand">
-        <!-- 🔹 নতুন গোল logo -->
-        <img src="images/logo.png" alt="BTX Logo" class="brand-logo-img">
+        <!-- LOGO -->
+        <img src="images/logo.png" alt="BTX Logo" class="brand-logo-img" />
         <div class="brand-title">
           <h1>BTX.ONE</h1>
           <p>USDT MLM • Member Dashboard (Demo)</p>
@@ -324,22 +343,42 @@
           <div class="summary-card">
             <p>Current Balance (Demo)</p>
             <h3 id="sumBalance">$0.00</h3>
-            <div class="summary-tag">ROI + All Income</div>
+            <div class="summary-tag">সব income মিলিয়ে</div>
           </div>
           <div class="summary-card">
-            <p>Total Deposit</p>
-            <h3 id="sumDeposit">$0.00</h3>
-            <div class="summary-tag">Demo deposited amount</div>
+            <p>Self Investment</p>
+            <h3 id="sumSelf">$0.00</h3>
+            <div class="summary-tag">নিজের প্যাকেজ</div>
           </div>
           <div class="summary-card">
-            <p>Direct Sponsor Income</p>
+            <p>Daily Profit (ROI)</p>
+            <h3 id="sumROI">$0.00</h3>
+            <div class="summary-tag">১ দিন এর হিসাব</div>
+          </div>
+          <div class="summary-card">
+            <p>Sponsor Bonus</p>
             <h3 id="sumDirect">$0.00</h3>
-            <div class="summary-tag">From direct referrals</div>
+            <div class="summary-tag">ডাইরেক্ট রেফার</div>
           </div>
           <div class="summary-card">
-            <p>Rank (Demo)</p>
-            <h3 id="sumTeam">No Rank</h3>
-            <div class="summary-tag">Based on team business</div>
+            <p>Generation Bonus</p>
+            <h3 id="sumGen">$0.00</h3>
+            <div class="summary-tag">লেভেল ইনকাম</div>
+          </div>
+          <div class="summary-card">
+            <p>Rank Bonus</p>
+            <h3 id="sumRank">$0.00</h3>
+            <div class="summary-tag">র‍্যাঙ্ক অনুযায়ী</div>
+          </div>
+          <div class="summary-card">
+            <p>Global Pool Bonus</p>
+            <h3 id="sumGlobal">$0.00</h3>
+            <div class="summary-tag">কোম্পানি গ্লোবাল</div>
+          </div>
+          <div class="summary-card">
+            <p>Total Earning</p>
+            <h3 id="sumTotal">$0.00</h3>
+            <div class="summary-tag">সব মিলিয়ে টোটাল</div>
           </div>
         </div>
 
@@ -348,7 +387,7 @@
           <div class="ref-header">
             <div>
               <h3>My Referral Link</h3>
-              <span>এই লিঙ্ক শেয়ার করলে নতুন মেম্বার রেজিস্ট্রেশন করলে আপনাকে Sponsor হিসাবে ধরবে। (Demo only)</span>
+              <span>এই লিঙ্ক শেয়ার করলে নতুন মেম্বার রেজিস্টার করলে আপনাকে Sponsor হিসাবে ধরবে। (Demo only)</span>
             </div>
           </div>
           <div class="ref-body">
@@ -402,17 +441,26 @@
           </div>
         </div>
 
+        <!-- LIVE CHARTS -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h4>Income Breakdown (Demo)</h4>
+            <canvas id="incomeChart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h4>ROI Growth – 30 Days (Demo)</h4>
+            <canvas id="roiChart"></canvas>
+          </div>
+        </div>
+
         <p class="note">
-          ⚠ এই পুরো ড্যাশবোর্ডটি শুধুমাত্র ফ্রন্টএন্ড / ডেমো। সব ডাটা আপনার ব্রাউজারের localStorage-এ সেভ হয়।
-          কোনো রিয়েল USDT / Real Investment এখানে হচ্ছে না।
+          ⚠ পুরো ড্যাশবোর্ড এখনো শুধু ফ্রন্টএন্ড / ডেমো। সব ডাটা আপনার ব্রাউজারের localStorage–এ থাকে,
+          কোন রিয়েল USDT / Real Investment হচ্ছে না। পরে চাইলে আমরা রিয়েল ব্যাকএন্ড + ওয়ালেট কানেক্ট করব।
         </p>
 
       </div>
     </section>
   </div>
-
-  <!-- 🔹 যদি mlm.js আছে, এই স্ক্রিপ্ট তার উপরে বসাও -->
-  <script src="mlm.js"></script>
 
   <script>
     var STORAGE_CURRENT = "btx_current_user_v1";
@@ -456,7 +504,7 @@
       }
     }
 
-    // INIT
+    // MAIN INIT
     (function initDashboard(){
       var user = getCurrentUser();
       if(!user){
@@ -464,36 +512,20 @@
         return;
       }
 
-      // 🔹 default = registration-এ সেভ হওয়া ডাটা
-      var me = user;
-
-      // 🔹 যদি BTX_MLM engine থাকে → income, deposit, rank আপডেট নেব
-      if(window.BTX_MLM && typeof BTX_MLM.recalcAll === "function"){
-        try{
-          BTX_MLM.recalcAll();
-          var fromEngine = BTX_MLM.getUser(user.username);
-          if(fromEngine){
-            me = fromEngine;
-          }
-        }catch(e){
-          console.warn("MLM engine error (demo):", e);
-        }
-      }
-
-      // Role অনুযায়ী admin বাটন
+      // Admin button
       var adminBtn = document.getElementById("adminBtn");
-      if(me.role === "admin"){
+      if(user.role === "admin"){
         adminBtn.style.display = "inline-flex";
       }
 
       // Welcome text
       document.getElementById("welcomeName").textContent =
-        "Welcome, " + (me.fullName || me.username || "Member");
+        "Welcome, " + (user.fullName || user.username || "Member");
       document.getElementById("welcomeUser").textContent =
-        "@" + (me.username || "");
+        "@" + (user.username || "");
 
       var roleBadge = document.getElementById("roleBadge");
-      if(me.role === "admin"){
+      if(user.role === "admin"){
         roleBadge.innerHTML =
           '<span class="badge-role">● ADMIN PANEL ACCESS</span>';
       }else{
@@ -501,57 +533,124 @@
           '<span class="badge-role badge-member">● MEMBER ACCOUNT</span>';
       }
 
-      // Small info right
+      // Small info
       document.getElementById("infoEmail").textContent =
-        "Email: " + (me.email || "-");
+        "Email: " + (user.email || "-");
       document.getElementById("infoCountry").textContent =
-        "Country: " + (me.country || "-");
+        "Country: " + (user.country || "-");
       document.getElementById("infoMobile").textContent =
-        "Mobile: " + (me.mobile || "-");
+        "Mobile: " + (user.mobile || "-");
       document.getElementById("infoSponsor").textContent =
-        "Sponsor: " + (me.sponsor_username || "N/A");
+        "Sponsor: " + (user.sponsor_username || user.refCode || "N/A");
 
       // Account box
-      document.getElementById("accName").textContent = me.fullName || "-";
-      document.getElementById("accUser").textContent = me.username || "-";
-      document.getElementById("accEmail").textContent = me.email || "-";
+      document.getElementById("accName").textContent = user.fullName || "-";
+      document.getElementById("accUser").textContent = user.username || "-";
+      document.getElementById("accEmail").textContent = user.email || "-";
       document.getElementById("accRole").textContent =
-        (me.role === "admin" ? "Admin" : "Member");
-
-      document.getElementById("accCountry").textContent = me.country || "-";
-      document.getElementById("accMobile").textContent = me.mobile || "-";
+        (user.role === "admin" ? "Admin" : "Member");
+      document.getElementById("accCountry").textContent = user.country || "-";
+      document.getElementById("accMobile").textContent = user.mobile || "-";
       document.getElementById("accSponsor").textContent =
-        me.sponsor_username || "-";
+        user.sponsor_username || user.refCode || "-";
 
-      if(me.createdAt){
+      if(user.createdAt){
         try{
-          var d = new Date(me.createdAt);
+          var d = new Date(user.createdAt);
           document.getElementById("accJoined").textContent = d.toLocaleString();
         }catch(e){
           document.getElementById("accJoined").textContent = "-";
         }
       }
 
-      // Referral link – যদি registration এ সেভ থাকে ব্যবহার, না থাকলে নতুন বানাই
-      var refLink = me.referralLink;
-      if(!refLink){
-        refLink =
-          window.location.origin +
-          "/register-neon.html?ref=" +
-          encodeURIComponent(me.username || "");
-      }
+      // Referral link (always based on username)
+      var refLink =
+        window.location.origin +
+        "/register-neon.html?ref=" +
+        encodeURIComponent(user.username || "");
       document.getElementById("myRefLink").value = refLink;
 
-      // 🔹 Summary ডাটা – যদি MLM engine না থাকে সব 0.00 থাকবে
-      var dep  = me.deposit      || 0;
-      var bal  = me.totalIncome  || 0;
-      var dir  = me.directIncome || 0;
-      var rank = me.rankName     || "No Rank";
+      // ==== DEMO EARNING DATA ====
+      // এখানে পরে তোমার রিয়েল হিসাব লাগাবো।
+      var selfInv      = 200;          // USD / USDT
+      var dailyROI     = selfInv * 0.012;  // 1.2%
+      var sponsorBonus = 60;
+      var genBonus     = 40;
+      var rankBonus    = 25;
+      var globalBonus  = 15;
 
-      document.getElementById("sumBalance").textContent = "$" + bal.toFixed(2);
-      document.getElementById("sumDeposit").textContent = "$" + dep.toFixed(2);
-      document.getElementById("sumDirect").textContent  = "$" + dir.toFixed(2);
-      document.getElementById("sumTeam").textContent    = rank;
+      var totalEarning = dailyROI + sponsorBonus + genBonus + rankBonus + globalBonus;
+      var currentBal   = selfInv + totalEarning;
+
+      // Summary text
+      document.getElementById("sumSelf").textContent    = "$" + selfInv.toFixed(2);
+      document.getElementById("sumROI").textContent     = "$" + dailyROI.toFixed(2);
+      document.getElementById("sumDirect").textContent  = "$" + sponsorBonus.toFixed(2);
+      document.getElementById("sumGen").textContent     = "$" + genBonus.toFixed(2);
+      document.getElementById("sumRank").textContent    = "$" + rankBonus.toFixed(2);
+      document.getElementById("sumGlobal").textContent  = "$" + globalBonus.toFixed(2);
+      document.getElementById("sumTotal").textContent   = "$" + totalEarning.toFixed(2);
+      document.getElementById("sumBalance").textContent = "$" + currentBal.toFixed(2);
+
+      // ===== CHART 1 – Income Breakdown =====
+      var ctx1 = document.getElementById("incomeChart").getContext("2d");
+      new Chart(ctx1,{
+        type:"bar",
+        data:{
+          labels:["Self Inv","ROI (1 day)","Sponsor","Generation","Rank","Global"],
+          datasets:[{
+            label:"USDT",
+            data:[
+              selfInv,
+              dailyROI,
+              sponsorBonus,
+              genBonus,
+              rankBonus,
+              globalBonus
+            ]
+          }]
+        },
+        options:{
+          plugins:{legend:{display:false}},
+          scales:{
+            x:{ticks:{color:"#e5f0ff"}},
+            y:{ticks:{color:"#e5f0ff"}}
+          }
+        }
+      });
+
+      // ===== CHART 2 – ROI Growth (30 days demo) =====
+      var days = [];
+      var roiValues = [];
+      var balance = selfInv;
+      for(var i=1;i<=30;i++){
+        // প্রতিদিন 1.2% ধরে ডেমো
+        var profit = balance * 0.012;
+        balance += profit;
+        days.push(i.toString());
+        roiValues.push(balance.toFixed(2));
+      }
+
+      var ctx2 = document.getElementById("roiChart").getContext("2d");
+      new Chart(ctx2,{
+        type:"line",
+        data:{
+          labels:days,
+          datasets:[{
+            label:"Balance (demo)",
+            data:roiValues,
+            tension:0.3
+          }]
+        },
+        options:{
+          plugins:{legend:{display:false}},
+          scales:{
+            x:{ticks:{color:"#e5f0ff"}},
+            y:{ticks:{color:"#e5f0ff"}}
+          }
+        }
+      });
+
     })();
   </script>
 </body>
