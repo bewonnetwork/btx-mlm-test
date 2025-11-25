@@ -81,7 +81,7 @@
       align-items:center;
       justify-content:center;
       gap:8px;
-      color:#e5f0ff; /* উপরের REGISTER টেক্সট রঙ */
+      color:#e5f0ff;
     }
     .rn-title-icon{
       font-size:26px;
@@ -192,7 +192,7 @@
       text-align:center;
       font-size:11px;
       background:#020617;
-      color:#e5f0ff;              /* ⬅ এখন উপরের REGISTER এর সাথে সেম রঙ */
+      color:#facc15;              /* নিচের Register box: কালো + হলুদ */
       padding:7px 12px;
       border-radius:999px;
     }
@@ -271,15 +271,42 @@
                 <span class="rn-icon">🌍</span>
                 <select id="country" name="country" required>
                   <option value="">Select Country</option>
-                  <option>Bangladesh</option>
-                  <option>India</option>
-                  <option>Nepal</option>
-                  <option>Qatar</option>
-                  <option>Kuwait</option>
-                  <option>Singapore</option>
-                  <option>United Arab Emirates</option>
-                  <option>United States</option>
-                  <option>United Kingdom</option>
+                  <option value="Bangladesh" data-dial="+880">Bangladesh (+880)</option>
+                  <option value="India" data-dial="+91">India (+91)</option>
+                  <option value="Pakistan" data-dial="+92">Pakistan (+92)</option>
+                  <option value="Nepal" data-dial="+977">Nepal (+977)</option>
+                  <option value="Sri Lanka" data-dial="+94">Sri Lanka (+94)</option>
+                  <option value="Bhutan" data-dial="+975">Bhutan (+975)</option>
+                  <option value="Malaysia" data-dial="+60">Malaysia (+60)</option>
+                  <option value="Singapore" data-dial="+65">Singapore (+65)</option>
+                  <option value="Thailand" data-dial="+66">Thailand (+66)</option>
+                  <option value="Indonesia" data-dial="+62">Indonesia (+62)</option>
+                  <option value="Philippines" data-dial="+63">Philippines (+63)</option>
+                  <option value="Qatar" data-dial="+974">Qatar (+974)</option>
+                  <option value="Kuwait" data-dial="+965">Kuwait (+965)</option>
+                  <option value="Saudi Arabia" data-dial="+966">Saudi Arabia (+966)</option>
+                  <option value="United Arab Emirates" data-dial="+971">United Arab Emirates (+971)</option>
+                  <option value="Oman" data-dial="+968">Oman (+968)</option>
+                  <option value="Bahrain" data-dial="+973">Bahrain (+973)</option>
+                  <option value="Turkey" data-dial="+90">Turkey (+90)</option>
+                  <option value="United Kingdom" data-dial="+44">United Kingdom (+44)</option>
+                  <option value="United States" data-dial="+1">United States (+1)</option>
+                  <option value="Canada" data-dial="+1">Canada (+1)</option>
+                  <option value="Australia" data-dial="+61">Australia (+61)</option>
+                  <option value="New Zealand" data-dial="+64">New Zealand (+64)</option>
+                  <option value="Germany" data-dial="+49">Germany (+49)</option>
+                  <option value="France" data-dial="+33">France (+33)</option>
+                  <option value="Italy" data-dial="+39">Italy (+39)</option>
+                  <option value="Spain" data-dial="+34">Spain (+34)</option>
+                  <option value="Netherlands" data-dial="+31">Netherlands (+31)</option>
+                  <option value="Switzerland" data-dial="+41">Switzerland (+41)</option>
+                  <option value="Belgium" data-dial="+32">Belgium (+32)</option>
+                  <option value="Denmark" data-dial="+45">Denmark (+45)</option>
+                  <option value="Sweden" data-dial="+46">Sweden (+46)</option>
+                  <option value="Norway" data-dial="+47">Norway (+47)</option>
+                  <option value="Finland" data-dial="+358">Finland (+358)</option>
+                  <option value="Japan" data-dial="+81">Japan (+81)</option>
+                  <option value="South Korea" data-dial="+82">South Korea (+82)</option>
                 </select>
               </div>
             </div>
@@ -367,25 +394,26 @@
     });
   });
 
-  // 🔹 Password strength + match live hint
+  // 🔹 Password strength + match live hint (4 = weak, 8 = medium, 10 = strong)
   const passInput  = document.getElementById("password");
   const pass2Input = document.getElementById("password2");
   const strengthEl = document.getElementById("passStrength");
   const matchEl    = document.getElementById("passMatch");
 
   function checkStrength(p){
-    let score = 0;
-    if(p.length >= 4)  score++;
-    if(p.length >= 8)  score++;
-    if(/[0-9]/.test(p) && /[A-Za-z]/.test(p)) score++;
-
     if(!p){
       strengthEl.textContent = "";
       strengthEl.className = "hint";
-    }else if(score === 1){
+      return;
+    }
+
+    if(p.length < 4){
+      strengthEl.textContent = "Password: too short";
+      strengthEl.className = "hint hint-bad";
+    }else if(p.length < 8){
       strengthEl.textContent = "Password: Weak";
       strengthEl.className = "hint hint-bad";
-    }else if(score === 2){
+    }else if(p.length < 10){
       strengthEl.textContent = "Password: Medium";
       strengthEl.className = "hint hint-ok";
     }else{
@@ -419,6 +447,21 @@
     const p1 = passInput.value;
     const p2 = pass2Input.value;
     checkMatch(p1,p2);
+  });
+
+  // 🔹 Country change করলে মোবাইল এ অটো dial code বসবে
+  const countrySelect = document.getElementById("country");
+  const mobileInput   = document.getElementById("mobile");
+
+  countrySelect.addEventListener("change", ()=>{
+    const opt  = countrySelect.options[countrySelect.selectedIndex];
+    const dial = opt ? opt.getAttribute("data-dial") : "";
+    if(!dial) return;
+
+    // যদি আগে কিছু না লেখা থাকে, বা শুধু পুরানো code থাকে, তাহলে replace করি
+    if(!mobileInput.value || mobileInput.value.startsWith("+")){
+      mobileInput.value = dial;
+    }
   });
 
   const regForm = document.getElementById("registerForm");
