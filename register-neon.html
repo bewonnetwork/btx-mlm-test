@@ -14,9 +14,9 @@
       background:radial-gradient(circle at top,#0f172a,#020617 60%);
       color:#e5f0ff;
     }
-    a{color:#38bdf8;text-decoration:none}
+    a{text-decoration:none}
 
-    /* 🔹 TOP HEADER + LOGO (GLOBAL STYLE) */
+    /* HEADER */
     .top-header{
       width:100%;
       max-width:900px;
@@ -69,27 +69,12 @@
     }
     .rn-inner{position:relative;z-index:1;}
 
-    .rn-title{
-      text-align:center;
-      margin-bottom:18px;
-    }
+    .rn-title{text-align:center;margin-bottom:18px;}
     .rn-title h1{
       font-size:24px;
-      letter-spacing:.22em;
+      letter-spacing:.28em;
       text-transform:uppercase;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      color:#e5f0ff;
-    }
-    .rn-title-icon{
-      font-size:26px;
-    }
-    .rn-title p{
-      font-size:12px;
-      color:#a5b4fc;
-      margin-top:4px;
+      color:#facc15;
     }
 
     .rn-form{
@@ -104,7 +89,7 @@
     .rn-row > div{flex:1;}
 
     .rn-label{
-      font-size:11px;
+      font-size:12px;
       color:#e5e7eb;
       margin-bottom:4px;
       display:block;
@@ -113,7 +98,7 @@
     .rn-field{
       position:relative;
       border-radius:999px;
-      padding:8px 14px 8px 34px;   /* আইকনের জন্য left বেশি */
+      padding:8px 14px 8px 36px;
       background:rgba(15,23,42,.98);
       box-shadow:
         0 0 0 2px rgba(190,242,100,.8),
@@ -128,19 +113,14 @@
       color:#e5f0ff;
       font-size:13px;
     }
-    .rn-field select option{
-      background:#020617;
-      color:#e5f0ff;
-    }
 
-    /* 🔹 ইনপুট আইকন */
     .rn-icon{
       position:absolute;
       left:12px;
       top:50%;
       transform:translateY(-50%);
-      font-size:14px;
-      opacity:.85;
+      font-size:15px;
+      opacity:.9;
       pointer-events:none;
     }
 
@@ -150,7 +130,6 @@
       top:50%;
       transform:translateY(-50%);
       font-size:11px;
-      text-transform:uppercase;
       letter-spacing:.14em;
       color:#bbf7d0;
       cursor:pointer;
@@ -163,42 +142,47 @@
       gap:6px;
       font-size:11px;
       color:#9ca3af;
-      margin-top:4px;
+      margin-top:6px;
     }
 
+    /* 🔥 REGISTER BUTTON – BLACK + YELLOW */
     .rn-btn{
       margin-top:12px;
       width:100%;
-      border:none;
       border-radius:999px;
+      border:1px solid #facc15;
       padding:11px 18px;
       font-size:13px;
-      font-weight:600;
+      font-weight:700;
       text-transform:uppercase;
       letter-spacing:.18em;
-      background:linear-gradient(135deg,#4ade80,#22c55e);
-      color:#022c22;
+      background:#000000;
+      color:#facc15;
       cursor:pointer;
-      box-shadow:0 22px 60px rgba(74,222,128,.9);
-      transition:transform .1s,box-shadow .1s;
+      box-shadow:0 18px 45px rgba(0,0,0,.9);
+      transition:.15s;
     }
     .rn-btn:hover{
       transform:translateY(-1px);
-      box-shadow:0 26px 80px rgba(74,222,128,1);
+      box-shadow:0 24px 65px rgba(0,0,0,1);
     }
 
+    /* নিচের REGISTER ব্লক */
     .rn-bottom{
-      margin-top:14px;
+      margin-top:12px;
       text-align:center;
       font-size:11px;
-      background:#020617;
-      color:#facc15;              /* নিচের Register box: কালো + হলুদ */
+      background:#000000;
+      color:#facc15;
       padding:7px 12px;
       border-radius:999px;
+      border:1px solid #facc15;
     }
-    .rn-bottom a{color:#38bdf8;}
+    .rn-bottom a{
+      color:#facc15;
+      font-weight:600;
+    }
 
-    /* 🔹 ছোট message টেক্সট (password strong / match ইত্যাদি) */
     .hint{
       display:block;
       font-size:10px;
@@ -206,169 +190,172 @@
       min-height:13px;
     }
     .hint-ok{color:#4ade80;}
+    .hint-mid{color:#facc15;}
     .hint-bad{color:#fb7185;}
 
     @media(max-width:480px){
       .rn-card{padding:22px 18px 16px;}
       .rn-row{flex-direction:column;}
-      .top-header{
-        justify-content:center;
-      }
+      .top-header{justify-content:center;}
     }
   </style>
 </head>
-
 <body>
-  <!-- 🔹 Global Logo + Title -->
-  <header class="top-header">
-    <img src="images/logo.png" alt="BTX Logo" class="logo-main">
-    <h1 class="site-title">BTX.ONE</h1>
-  </header>
 
-  <div class="rn-wrap">
-    <div class="rn-card">
-      <div class="rn-glow"></div>
-      <div class="rn-inner">
+<header class="top-header">
+  <img src="images/logo.png" alt="BTX Logo" class="logo-main">
+  <h1 class="site-title">BTX.ONE</h1>
+</header>
 
-        <div class="rn-title">
-          <h1><span class="rn-title-icon">📝</span> REGISTER</h1>
-          <p>BTX.ONE • USDT MLM • Demo</p>
-        </div>
+<div class="rn-wrap">
+  <div class="rn-card">
+    <div class="rn-glow"></div>
+    <div class="rn-inner">
 
-        <form id="registerForm" class="rn-form">
-          <!-- Full Name -->
-          <div>
-            <label class="rn-label">Full Name</label>
-            <div class="rn-field">
-              <span class="rn-icon">👤</span>
-              <input id="fullName" name="fullName" type="text" required />
-            </div>
-          </div>
-
-          <!-- Username + Email -->
-          <div class="rn-row">
-            <div>
-              <label class="rn-label">Username</label>
-              <div class="rn-field">
-                <span class="rn-icon">🆔</span>
-                <input id="username" name="username" type="text" required />
-              </div>
-            </div>
-            <div>
-              <label class="rn-label">Email</label>
-              <div class="rn-field">
-                <span class="rn-icon">✉️</span>
-                <input id="email" name="email" type="email" required />
-              </div>
-            </div>
-          </div>
-
-          <!-- Country + Mobile -->
-          <div class="rn-row">
-            <div>
-              <label class="rn-label">Select Country</label>
-              <div class="rn-field">
-                <span class="rn-icon">🌍</span>
-                <select id="country" name="country" required>
-                  <option value="">Select Country</option>
-                  <option value="Bangladesh" data-dial="+880">Bangladesh (+880)</option>
-                  <option value="India" data-dial="+91">India (+91)</option>
-                  <option value="Pakistan" data-dial="+92">Pakistan (+92)</option>
-                  <option value="Nepal" data-dial="+977">Nepal (+977)</option>
-                  <option value="Sri Lanka" data-dial="+94">Sri Lanka (+94)</option>
-                  <option value="Bhutan" data-dial="+975">Bhutan (+975)</option>
-                  <option value="Malaysia" data-dial="+60">Malaysia (+60)</option>
-                  <option value="Singapore" data-dial="+65">Singapore (+65)</option>
-                  <option value="Thailand" data-dial="+66">Thailand (+66)</option>
-                  <option value="Indonesia" data-dial="+62">Indonesia (+62)</option>
-                  <option value="Philippines" data-dial="+63">Philippines (+63)</option>
-                  <option value="Qatar" data-dial="+974">Qatar (+974)</option>
-                  <option value="Kuwait" data-dial="+965">Kuwait (+965)</option>
-                  <option value="Saudi Arabia" data-dial="+966">Saudi Arabia (+966)</option>
-                  <option value="United Arab Emirates" data-dial="+971">United Arab Emirates (+971)</option>
-                  <option value="Oman" data-dial="+968">Oman (+968)</option>
-                  <option value="Bahrain" data-dial="+973">Bahrain (+973)</option>
-                  <option value="Turkey" data-dial="+90">Turkey (+90)</option>
-                  <option value="United Kingdom" data-dial="+44">United Kingdom (+44)</option>
-                  <option value="United States" data-dial="+1">United States (+1)</option>
-                  <option value="Canada" data-dial="+1">Canada (+1)</option>
-                  <option value="Australia" data-dial="+61">Australia (+61)</option>
-                  <option value="New Zealand" data-dial="+64">New Zealand (+64)</option>
-                  <option value="Germany" data-dial="+49">Germany (+49)</option>
-                  <option value="France" data-dial="+33">France (+33)</option>
-                  <option value="Italy" data-dial="+39">Italy (+39)</option>
-                  <option value="Spain" data-dial="+34">Spain (+34)</option>
-                  <option value="Netherlands" data-dial="+31">Netherlands (+31)</option>
-                  <option value="Switzerland" data-dial="+41">Switzerland (+41)</option>
-                  <option value="Belgium" data-dial="+32">Belgium (+32)</option>
-                  <option value="Denmark" data-dial="+45">Denmark (+45)</option>
-                  <option value="Sweden" data-dial="+46">Sweden (+46)</option>
-                  <option value="Norway" data-dial="+47">Norway (+47)</option>
-                  <option value="Finland" data-dial="+358">Finland (+358)</option>
-                  <option value="Japan" data-dial="+81">Japan (+81)</option>
-                  <option value="South Korea" data-dial="+82">South Korea (+82)</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <label class="rn-label">Mobile Number</label>
-              <div class="rn-field">
-                <span class="rn-icon">📱</span>
-                <input id="mobile" name="mobile" type="text" placeholder="+880…" required />
-              </div>
-            </div>
-          </div>
-
-          <!-- Password + Re-enter -->
-          <div class="rn-row">
-            <div>
-              <label class="rn-label">Password</label>
-              <div class="rn-field">
-                <span class="rn-icon">🔒</span>
-                <input id="password" name="password" type="password" required />
-                <span class="rn-eye" data-target="password">SHOW</span>
-              </div>
-              <small id="passStrength" class="hint"></small>
-            </div>
-            <div>
-              <label class="rn-label">Re-enter Password</label>
-              <div class="rn-field">
-                <span class="rn-icon">🔁</span>
-                <input id="password2" name="password2" type="password" required />
-                <span class="rn-eye" data-target="password2">SHOW</span>
-              </div>
-              <small id="passMatch" class="hint"></small>
-            </div>
-          </div>
-
-          <!-- Referral -->
-          <div>
-            <label class="rn-label">Referral Code (optional)</label>
-            <div class="rn-field">
-              <span class="rn-icon">🎯</span>
-              <input id="refCode" name="refCode" type="text" placeholder="Sponsor / referral code" />
-            </div>
-          </div>
-
-          <!-- Terms -->
-          <label class="rn-terms">
-            <input id="terms" type="checkbox" required />
-            <span>I accept the Terms &amp; Conditions (demo)</span>
-          </label>
-
-          <button type="submit" class="rn-btn">REGISTER</button>
-        </form>
-
-        <div class="rn-bottom">
-          Already have an account?
-          <a href="login.html">Login</a>
-        </div>
-
+      <div class="rn-title">
+        <h1>REGISTER</h1>
       </div>
+
+      <form id="registerForm" class="rn-form">
+        <!-- Full Name -->
+        <div>
+          <label class="rn-label">Full Name</label>
+          <div class="rn-field">
+            <span class="rn-icon">👤</span>
+            <input id="fullName" required />
+          </div>
+        </div>
+
+        <!-- Username + Email -->
+        <div class="rn-row">
+          <div>
+            <label class="rn-label">Username</label>
+            <div class="rn-field">
+              <span class="rn-icon">🆔</span>
+              <input id="username" required />
+            </div>
+          </div>
+          <div>
+            <label class="rn-label">Email</label>
+            <div class="rn-field">
+              <span class="rn-icon">✉️</span>
+              <input id="email" type="email" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- Country + Mobile (A–Z + data-code) -->
+        <div class="rn-row">
+          <div>
+            <label class="rn-label">Select Country</label>
+            <div class="rn-field">
+              <span class="rn-icon">🌍</span>
+              <select id="country" required>
+                <option value="">Select Country</option>
+                <!-- 🔤 A – Z Sorted -->
+                <option value="Afghanistan" data-code="+93">Afghanistan (+93)</option>
+                <option value="Australia" data-code="+61">Australia (+61)</option>
+                <option value="Bangladesh" data-code="+880">Bangladesh (+880)</option>
+                <option value="Belgium" data-code="+32">Belgium (+32)</option>
+                <option value="Bhutan" data-code="+975">Bhutan (+975)</option>
+                <option value="Brazil" data-code="+55">Brazil (+55)</option>
+                <option value="Canada" data-code="+1">Canada (+1)</option>
+                <option value="China" data-code="+86">China (+86)</option>
+                <option value="Denmark" data-code="+45">Denmark (+45)</option>
+                <option value="Egypt" data-code="+20">Egypt (+20)</option>
+                <option value="France" data-code="+33">France (+33)</option>
+                <option value="Germany" data-code="+49">Germany (+49)</option>
+                <option value="India" data-code="+91">India (+91)</option>
+                <option value="Indonesia" data-code="+62">Indonesia (+62)</option>
+                <option value="Italy" data-code="+39">Italy (+39)</option>
+                <option value="Japan" data-code="+81">Japan (+81)</option>
+                <option value="Kuwait" data-code="+965">Kuwait (+965)</option>
+                <option value="Malaysia" data-code="+60">Malaysia (+60)</option>
+                <option value="Maldives" data-code="+960">Maldives (+960)</option>
+                <option value="Myanmar" data-code="+95">Myanmar (+95)</option>
+                <option value="Nepal" data-code="+977">Nepal (+977)</option>
+                <option value="Netherlands" data-code="+31">Netherlands (+31)</option>
+                <option value="New Zealand" data-code="+64">New Zealand (+64)</option>
+                <option value="Oman" data-code="+968">Oman (+968)</option>
+                <option value="Pakistan" data-code="+92">Pakistan (+92)</option>
+                <option value="Philippines" data-code="+63">Philippines (+63)</option>
+                <option value="Qatar" data-code="+974">Qatar (+974)</option>
+                <option value="Russia" data-code="+7">Russia (+7)</option>
+                <option value="Saudi Arabia" data-code="+966">Saudi Arabia (+966)</option>
+                <option value="Singapore" data-code="+65">Singapore (+65)</option>
+                <option value="South Africa" data-code="+27">South Africa (+27)</option>
+                <option value="Spain" data-code="+34">Spain (+34)</option>
+                <option value="Sri Lanka" data-code="+94">Sri Lanka (+94)</option>
+                <option value="Sweden" data-code="+46">Sweden (+46)</option>
+                <option value="Switzerland" data-code="+41">Switzerland (+41)</option>
+                <option value="Thailand" data-code="+66">Thailand (+66)</option>
+                <option value="Turkey" data-code="+90">Turkey (+90)</option>
+                <option value="UAE" data-code="+971">United Arab Emirates (+971)</option>
+                <option value="UK" data-code="+44">United Kingdom (+44)</option>
+                <option value="USA" data-code="+1">United States (+1)</option>
+                <option value="Vietnam" data-code="+84">Vietnam (+84)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="rn-label">Mobile Number</label>
+            <div class="rn-field">
+              <span class="rn-icon">📱</span>
+              <input id="mobile" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="rn-row">
+          <div>
+            <label class="rn-label">Password</label>
+            <div class="rn-field">
+              <span class="rn-icon">🔒</span>
+              <input id="password" type="password" required />
+              <span class="rn-eye" data-target="password">SHOW</span>
+            </div>
+            <small id="passStrength" class="hint"></small>
+          </div>
+          <div>
+            <label class="rn-label">Re-enter Password</label>
+            <div class="rn-field">
+              <span class="rn-icon">🔁</span>
+              <input id="password2" type="password" required />
+              <span class="rn-eye" data-target="password2">SHOW</span>
+            </div>
+            <small id="passMatch" class="hint"></small>
+          </div>
+        </div>
+
+        <!-- Referral -->
+        <div>
+          <label class="rn-label">Referral Code (optional)</label>
+          <div class="rn-field">
+            <span class="rn-icon">🎯</span>
+            <input id="refCode" />
+          </div>
+        </div>
+
+        <!-- Terms -->
+        <label class="rn-terms">
+          <input id="terms" type="checkbox" required />
+          <span>I accept the Terms &amp; Conditions</span>
+        </label>
+
+        <button type="submit" class="rn-btn">REGISTER</button>
+      </form>
+
+      <div class="rn-bottom">
+        Already have an account?
+        <a href="login.html">Login</a>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <!-- 🔹 JS – registration + localStorage + password meter -->
 <script>
   const STORAGE_USERS   = "btx_users_v1";
   const STORAGE_CURRENT = "btx_current_user_v1";
@@ -376,59 +363,63 @@
   function loadUsers(){
     const raw = localStorage.getItem(STORAGE_USERS);
     if(!raw) return [];
-    try { return JSON.parse(raw); } catch(e){ return []; }
+    try{return JSON.parse(raw);}catch(e){return [];}
   }
   function saveUsers(users){
     localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
   }
 
-  // show / hide password
+  // AUTO COUNTRY CODE
+  const countrySel = document.getElementById("country");
+  const mobileInput = document.getElementById("mobile");
+  countrySel.addEventListener("change", ()=>{
+    const opt = countrySel.options[countrySel.selectedIndex];
+    const code = opt.getAttribute("data-code") || "";
+    if(code){
+      mobileInput.value = code + " ";
+    }
+  });
+
+  // SHOW / HIDE PASSWORD
   document.querySelectorAll(".rn-eye").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const id = btn.getAttribute("data-target");
-      const input = document.getElementById(id);
-      if(!input) return;
-      const isPass = input.type === "password";
-      input.type = isPass ? "text" : "password";
-      btn.textContent = isPass ? "HIDE" : "SHOW";
+    btn.addEventListener("click",()=>{
+      const id = btn.dataset.target;
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.type = el.type === "password" ? "text" : "password";
+      btn.textContent = el.type === "password" ? "SHOW" : "HIDE";
     });
   });
 
-  // 🔹 Password strength + match live hint (4 = weak, 8 = medium, 10 = strong)
-  const passInput  = document.getElementById("password");
-  const pass2Input = document.getElementById("password2");
+  // PASSWORD STRENGTH
+  const p1 = document.getElementById("password");
+  const p2 = document.getElementById("password2");
   const strengthEl = document.getElementById("passStrength");
   const matchEl    = document.getElementById("passMatch");
 
-  function checkStrength(p){
-    if(!p){
-      strengthEl.textContent = "";
-      strengthEl.className = "hint";
-      return;
-    }
-
-    if(p.length < 4){
-      strengthEl.textContent = "Password: too short";
-      strengthEl.className = "hint hint-bad";
-    }else if(p.length < 8){
-      strengthEl.textContent = "Password: Weak";
-      strengthEl.className = "hint hint-bad";
-    }else if(p.length < 10){
-      strengthEl.textContent = "Password: Medium";
-      strengthEl.className = "hint hint-ok";
-    }else{
+  function updateStrength(){
+    const val = p1.value;
+    if(val.length >= 10){
       strengthEl.textContent = "Password: Strong";
       strengthEl.className = "hint hint-ok";
+    }else if(val.length >= 8){
+      strengthEl.textContent = "Password: Medium";
+      strengthEl.className = "hint hint-mid";
+    }else if(val.length >= 4){
+      strengthEl.textContent = "Password: Weak";
+      strengthEl.className = "hint hint-bad";
+    }else{
+      strengthEl.textContent = "";
+      strengthEl.className = "hint";
     }
   }
-
-  function checkMatch(p1,p2){
-    if(!p2){
+  function updateMatch(){
+    if(!p2.value){
       matchEl.textContent = "";
       matchEl.className = "hint";
       return;
     }
-    if(p1 === p2){
+    if(p1.value === p2.value){
       matchEl.textContent = "✅ Password matched";
       matchEl.className = "hint hint-ok";
     }else{
@@ -437,54 +428,30 @@
     }
   }
 
-  passInput.addEventListener("input", ()=>{
-    const p1 = passInput.value;
-    const p2 = pass2Input.value;
-    checkStrength(p1);
-    checkMatch(p1,p2);
-  });
-  pass2Input.addEventListener("input", ()=>{
-    const p1 = passInput.value;
-    const p2 = pass2Input.value;
-    checkMatch(p1,p2);
-  });
+  p1.addEventListener("input",()=>{updateStrength();updateMatch();});
+  p2.addEventListener("input",updateMatch);
 
-  // 🔹 Country change করলে মোবাইল এ অটো dial code বসবে
-  const countrySelect = document.getElementById("country");
-  const mobileInput   = document.getElementById("mobile");
-
-  countrySelect.addEventListener("change", ()=>{
-    const opt  = countrySelect.options[countrySelect.selectedIndex];
-    const dial = opt ? opt.getAttribute("data-dial") : "";
-    if(!dial) return;
-
-    // যদি আগে কিছু না লেখা থাকে, বা শুধু পুরানো code থাকে, তাহলে replace করি
-    if(!mobileInput.value || mobileInput.value.startsWith("+")){
-      mobileInput.value = dial;
-    }
-  });
-
-  const regForm = document.getElementById("registerForm");
-
-  regForm.addEventListener("submit", (e)=>{
+  // FORM SUBMIT
+  const form = document.getElementById("registerForm");
+  form.addEventListener("submit",e=>{
     e.preventDefault();
 
     const fullName = document.getElementById("fullName").value.trim();
     const username = document.getElementById("username").value.trim().toLowerCase();
     const email    = document.getElementById("email").value.trim().toLowerCase();
-    const country  = document.getElementById("country").value;
-    const mobile   = document.getElementById("mobile").value.trim();
-    const pass1    = passInput.value;
-    const pass2    = pass2Input.value;
-    const refCodeRaw = document.getElementById("refCode").value.trim();
-    const refCode  = refCodeRaw.toLowerCase();
-    const termsChk = document.getElementById("terms");
+    const country  = countrySel.value;
+    const mobile   = mobileInput.value.trim();
+    const pass1    = p1.value;
+    const pass2    = p2.value;
+    const refRaw   = document.getElementById("refCode").value.trim();
+    const ref      = refRaw.toLowerCase();
+    const terms    = document.getElementById("terms");
 
     if(!fullName || !username || !email || !country || !mobile){
       alert("❗ সবগুলো required ফিল্ড পূরণ করুন।");
       return;
     }
-    if(!termsChk.checked){
+    if(!terms.checked){
       alert("❗ Terms & Conditions এ টিক দিন।");
       return;
     }
@@ -498,7 +465,6 @@
     }
 
     const users = loadUsers();
-
     if(users.some(u=>u.username === username)){
       alert("⚠ এই username আগে থেকেই রয়েছে। অন্যটা ব্যবহার করুন।");
       return;
@@ -508,17 +474,16 @@
       return;
     }
 
-    // sponsor খুঁজে বের করি (optional)
+    // sponsor check
     let sponsorUser = null;
-    if(refCode){
-      sponsorUser = users.find(u=>u.username === refCode);
+    if(ref){
+      sponsorUser = users.find(u=>u.username === ref);
       if(!sponsorUser){
-        alert("⚠ এই sponsor / referral username পাওয়া যায়নি। আগে sponsor ঠিক করুন অথবা ফাঁকা রাখুন।");
+        alert("⚠ এই sponsor / referral username পাওয়া যায়নি।");
         return;
       }
     }
 
-    // প্রথম user = admin, বাকিরা member
     const role = users.length === 0 ? "admin" : "member";
 
     const newUser = {
@@ -528,7 +493,7 @@
       email,
       country,
       mobile,
-      refCode: refCodeRaw,
+      refCode: refRaw,
       sponsor_username: sponsorUser ? sponsorUser.username : "",
       password: pass1,
       role,
@@ -541,33 +506,22 @@
     };
 
     users.push(newUser);
-
-    // sponsor থাকলে তার teamCount++ করি
     if(sponsorUser){
       sponsorUser.teamCount = (sponsorUser.teamCount || 0) + 1;
     }
-
     saveUsers(users);
 
-    if(role === "admin"){
-      alert("✅ Registration successful! আপনি এখন admin হিসেবে সেট হয়েছেন। এবার Login করুন।");
-    }else{
-      alert("✅ Registration successful! এখন এই username/email + password দিয়ে Login করতে পারবেন।");
-    }
-
-    regForm.reset();
+    alert("✅ Registration successful! এখন এই username/email + password দিয়ে Login করতে পারবেন।");
     window.location.href = "login.html";
   });
 
-  // যদি URL এ ?ref= থাকে তাহলে Auto set
-  (function presetRefCode(){
+  // ?ref= from URL
+  (function presetRef(){
     const params = new URLSearchParams(window.location.search);
     const ref = params.get("ref");
     if(ref){
-      const input = document.getElementById("refCode");
-      if(input && !input.value){
-        input.value = ref;
-      }
+      const i = document.getElementById("refCode");
+      if(i && !i.value) i.value = ref;
     }
   })();
 </script>
