@@ -10,73 +10,96 @@
     body{
       min-height:100vh;
       display:flex;
+      flex-direction:column;
       align-items:center;
-      justify-content:center;
-      background:radial-gradient(circle at top,#1d2b64,#020617 60%);
+      background:radial-gradient(circle at top,#0f172a,#020617 60%);
       color:#e5f0ff;
     }
     a{color:#38bdf8;text-decoration:none}
 
+    /* TOP HEADER + LOGO */
+    .top-header{
+      width:100%;
+      max-width:900px;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo-main{
+      width:58px;
+      height:58px;
+      border-radius:50%;
+      object-fit:cover;
+      filter:drop-shadow(0 0 10px rgba(255,255,255,.35))
+             drop-shadow(0 0 18px rgba(34,197,94,.45));
+    }
+    .site-title{
+      font-size:22px;
+      font-weight:700;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      background:linear-gradient(120deg,#38bdf8,#4ade80);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+
+    /* LOGIN CARD */
     .lg-wrap{
       width:100%;
-      max-width:380px;
-      padding:16px;
+      max-width:480px;
+      padding:20px;
     }
     .lg-card{
       position:relative;
-      border-radius:26px;
-      padding:24px 20px 20px;
+      border-radius:32px;
+      padding:26px 22px 22px;
       background:linear-gradient(145deg,rgba(12,20,46,.98),rgba(15,23,42,.96));
       box-shadow:
-        0 0 0 2px rgba(56,189,248,.7),
-        0 16px 46px rgba(0,0,0,.9);
+        0 0 0 2px rgba(132,204,22,.8),
+        0 24px 60px rgba(0,0,0,.9);
       overflow:hidden;
     }
     .lg-glow{
       position:absolute;
-      inset:-70px;
+      inset:-100px;
       background:
-        radial-gradient(circle at 0 0,rgba(59,130,246,.35),transparent 55%),
-        radial-gradient(circle at 100% 100%,rgba(16,185,129,.3),transparent 55%);
+        radial-gradient(circle at 0 0,rgba(190,242,100,.25),transparent 60%),
+        radial-gradient(circle at 100% 100%,rgba(56,189,248,.28),transparent 60%);
       opacity:.9;
       pointer-events:none;
     }
     .lg-inner{position:relative;z-index:1;}
 
-    .lg-title{
-      text-align:center;
-      margin-bottom:16px;
-    }
+    .lg-title{text-align:center;margin-bottom:18px;}
     .lg-title h1{
-      font-size:22px;
-      letter-spacing:.16em;
+      font-size:24px;
+      letter-spacing:.28em;
       text-transform:uppercase;
     }
     .lg-title p{
       font-size:12px;
-      color:#9ca3af;
+      color:#a5b4fc;
       margin-top:4px;
     }
 
-    .lg-form{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .lg-group label{
-      font-size:12px;
-      display:block;
+    /* FIELDS */
+    .lg-form{display:flex;flex-direction:column;gap:12px;}
+
+    .lg-label{
+      font-size:11px;
+      color:#e5e7eb;
       margin-bottom:4px;
-      color:#dbeafe;
+      display:block;
     }
     .lg-field{
       position:relative;
-      border-radius:18px;
-      padding:9px 12px;
-      background:rgba(15,23,42,.96);
+      border-radius:999px;
+      padding:8px 14px 8px 34px;
+      background:rgba(15,23,42,.98);
       box-shadow:
-        0 0 0 2px rgba(56,189,248,.8),
-        0 0 14px rgba(56,189,248,.6);
+        0 0 0 2px rgba(190,242,100,.8),
+        0 0 18px rgba(190,242,100,.7);
     }
     .lg-field input{
       width:100%;
@@ -87,105 +110,115 @@
       font-size:13px;
     }
 
+    /* Icon left */
+    .lg-icon{
+      position:absolute;
+      left:12px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:15px;
+      opacity:.85;
+      pointer-events:none;
+    }
+
+    /* SHOW/HIDE */
     .lg-eye{
       position:absolute;
-      right:10px;
+      right:14px;
       top:50%;
       transform:translateY(-50%);
       font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.1em;
-      color:#7dd3fc;
       cursor:pointer;
+      letter-spacing:.1em;
+      color:#bbf7d0;
       user-select:none;
     }
 
-    .lg-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:11px;
-      margin-top:4px;
-      color:#9ca3af;
-    }
-
+    /* BUTTON */
     .lg-btn{
-      margin-top:12px;
       width:100%;
       border:none;
       border-radius:999px;
-      padding:10px 18px;
+      padding:12px;
       font-size:13px;
       font-weight:600;
       text-transform:uppercase;
-      letter-spacing:.16em;
-      background:linear-gradient(135deg,#38bdf8,#22c55e);
-      color:#02111f;
-      box-shadow:0 18px 44px rgba(56,189,248,.85);
+      letter-spacing:.18em;
+      background:linear-gradient(135deg,#4ade80,#22c55e);
+      color:#022c22;
+      margin-top:14px;
       cursor:pointer;
-      transition:transform .1s,box-shadow .1s;
+      box-shadow:0 22px 60px rgba(74,222,128,.9);
+      transition:.1s;
     }
     .lg-btn:hover{
       transform:translateY(-1px);
-      box-shadow:0 22px 60px rgba(56,189,248,.95);
+      box-shadow:0 26px 80px rgba(74,222,128,1);
     }
 
+    /* Bottom */
     .lg-bottom{
-      margin-top:10px;
+      margin-top:16px;
       text-align:center;
       font-size:11px;
-      color:#9ca3af;
+      background:#020617;
+      color:#facc15;
+      padding:8px 14px;
+      border-radius:999px;
     }
 
-    @media(max-width:480px){
-      .lg-card{padding:22px 18px;}
-    }
   </style>
 </head>
+
 <body>
 
-<div class="lg-wrap">
-  <div class="lg-card">
-    <div class="lg-glow"></div>
-    <div class="lg-inner">
+  <!-- LOGO -->
+  <header class="top-header">
+    <img src="images/logo.png" class="logo-main">
+    <h1 class="site-title">BTX.ONE</h1>
+  </header>
 
-      <div class="lg-title">
-        <h1>LOGIN</h1>
-        <p>BTX.ONE • Member Panel (Demo)</p>
-      </div>
+  <div class="lg-wrap">
+    <div class="lg-card">
+      <div class="lg-glow"></div>
+      <div class="lg-inner">
 
-      <form id="lgForm" class="lg-form">
-        <div class="lg-group">
-          <label>Username / Email</label>
-          <div class="lg-field">
-            <input type="text" name="username" placeholder="btxuser01 or you@example.com" required>
+        <div class="lg-title">
+          <h1>LOGIN</h1>
+          <p>Member Access – BTX.ONE Demo</p>
+        </div>
+
+        <form id="lgForm" class="lg-form">
+
+          <!-- Username -->
+          <div>
+            <label class="lg-label">Username or Email</label>
+            <div class="lg-field">
+              <span class="lg-icon">👤</span>
+              <input type="text" id="lgUser" required placeholder="yourname / you@mail.com">
+            </div>
           </div>
-        </div>
 
-        <div class="lg-group">
-          <label>Password</label>
-          <div class="lg-field">
-            <input type="password" name="password" id="lgPass" required>
-            <span class="lg-eye" data-target="lgPass">SHOW</span>
+          <!-- Password -->
+          <div>
+            <label class="lg-label">Password</label>
+            <div class="lg-field">
+              <span class="lg-icon">🔑</span>
+              <input type="password" id="lgPass" required>
+              <span class="lg-eye" data-target="lgPass">SHOW</span>
+            </div>
           </div>
+
+          <button class="lg-btn" type="submit">LOGIN</button>
+        </form>
+
+        <div class="lg-bottom">
+          New member? <a href="register-neon.html">Register now</a>
         </div>
 
-        <div class="lg-row">
-          <span>Demo only – no real login.</span>
-          <a href="#">Forgot password?</a>
-        </div>
-
-        <button type="submit" class="lg-btn">Login</button>
-      </form>
-
-      <div class="lg-bottom">
-        Don’t have an account?
-        <a href="register-neon.html">Create new account</a>
       </div>
-
     </div>
   </div>
-</div>
 
 <script>
   const STORAGE_USERS   = "btx_users_v1";
@@ -194,50 +227,41 @@
   function loadUsers(){
     const raw = localStorage.getItem(STORAGE_USERS);
     if(!raw) return [];
-    try { return JSON.parse(raw); } catch(e){ return []; }
+    try{return JSON.parse(raw);}catch(e){return[];}
   }
 
-  // show / hide password
   document.querySelectorAll(".lg-eye").forEach(btn=>{
     btn.addEventListener("click",()=>{
       const id = btn.getAttribute("data-target");
       const input = document.getElementById(id);
-      if(!input) return;
-      const isPass = input.type === "password";
-      input.type = isPass ? "text" : "password";
-      btn.textContent = isPass ? "HIDE" : "SHOW";
+      if(input.type==="password"){
+        input.type="text";
+        btn.textContent="HIDE";
+      }else{
+        input.type="password";
+        btn.textContent="SHOW";
+      }
     });
   });
 
-  const lgForm = document.getElementById("lgForm");
-
-  lgForm.addEventListener("submit",e=>{
+  document.getElementById("lgForm").addEventListener("submit",e=>{
     e.preventDefault();
-
-    const usernameRaw = lgForm.username.value.trim().toLowerCase();
-    const pass        = lgForm.password.value;
-
-    if(!usernameRaw || !pass){
-      alert("❗ Username / Email এবং password দিন।");
-      return;
-    }
+    const userVal = document.getElementById("lgUser").value.trim().toLowerCase();
+    const passVal = document.getElementById("lgPass").value;
 
     const users = loadUsers();
-
-    const user = users.find(u =>
-      (u.username === usernameRaw || u.email === usernameRaw) &&
-      u.password === pass
+    const found = users.find(u =>
+      (u.username === userVal || u.email === userVal) &&
+      u.password === passVal
     );
 
-    if(!user){
-      alert("❌ Username / Email বা Password ভুল হয়েছে।");
+    if(!found){
+      alert("❌ Username বা Password সঠিক নয়!");
       return;
     }
 
-    // current user save
-    localStorage.setItem(STORAGE_CURRENT, JSON.stringify(user));
-
-    alert("✅ Demo login success! এখন dashboard দেখা যাবে।");
+    localStorage.setItem(STORAGE_CURRENT, JSON.stringify(found));
+    alert("✅ Login success!");
     window.location.href = "dashboard.html";
   });
 </script>
