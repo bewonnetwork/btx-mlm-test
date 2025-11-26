@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BTX.ONE – Reset Demo Data</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:radial-gradient(circle at top,#0f172a,#020617 60%);
+      color:#e5f0ff;
+    }
+    .wrap{
+      width:100%;
+      max-width:420px;
+      padding:18px;
+    }
+    .card{
+      position:relative;
+      border-radius:28px;
+      padding:22px 20px 18px;
+      background:linear-gradient(145deg,rgba(12,20,46,.98),rgba(15,23,42,.96));
+      box-shadow:
+        0 0 0 2px rgba(248,250,252,.1),
+        0 24px 60px rgba(0,0,0,.9);
+      overflow:hidden;
+    }
+    .glow{
+      position:absolute;
+      inset:-90px;
+      background:
+        radial-gradient(circle at 0 0,rgba(248,250,252,.25),transparent 60%),
+        radial-gradient(circle at 100% 100%,rgba(56,189,248,.28),transparent 60%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .inner{position:relative;z-index:1;}
+
+    h1{
+      font-size:20px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      text-align:center;
+      margin-bottom:10px;
+    }
+    p{
+      font-size:13px;
+      color:#cbd5f5;
+      text-align:center;
+      margin-bottom:14px;
+    }
+    .warn{
+      font-size:11px;
+      color:#fbbf24;
+      text-align:center;
+      margin-bottom:16px;
+    }
+
+    .btn-reset{
+      width:100%;
+      border:none;
+      border-radius:999px;
+      padding:11px 18px;
+      font-size:13px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      background:linear-gradient(135deg,#f97316,#ef4444);
+      color:#020617;
+      cursor:pointer;
+      box-shadow:0 22px 60px rgba(239,68,68,.9);
+      transition:transform .1s,box-shadow .1s;
+    }
+    .btn-reset:hover{
+      transform:translateY(-1px);
+      box-shadow:0 26px 80px rgba(239,68,68,1);
+    }
+
+    .small-links{
+      margin-top:14px;
+      display:flex;
+      justify-content:space-between;
+      font-size:11px;
+      color:#9ca3af;
+    }
+    .small-links a{
+      color:#38bdf8;
+      text-decoration:none;
+    }
+
+    .msg{
+      margin-top:10px;
+      font-size:12px;
+      text-align:center;
+    }
+    .msg-ok{color:#4ade80;}
+    .msg-bad{color:#f97373;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="glow"></div>
+      <div class="inner">
+        <h1>RESET</h1>
+        <p>এখানে ক্লিক করলে এই ব্রাউজারে BTX.ONE ডেমোর সব ডাটা ক্লিয়ার হয়ে যাবে।</p>
+        <div class="warn">
+          ⚠ শুধু <b>এই ডিভাইস / এই ব্রাউজার</b> এর ডাটা ডিলিট হবে।  
+          GitHub বা Netlify–এর ফাইল ডিলিট হবে না।
+        </div>
+
+        <button class="btn-reset" onclick="resetDemo()">Clear Demo Data</button>
+
+        <div id="msgBox" class="msg"></div>
+
+        <div class="small-links">
+          <a href="index.html">← Back Home</a>
+          <a href="register-neon.html">Go to Register →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function resetDemo(){
+      try{
+        // তোমার সব localStorage key এখানে রাখলাম
+        const keys = [
+          "btx_users_v1",
+          "btx_current_user_v1",
+          "btx_deposits_v1",
+          "btx_withdraws_v1",
+          "btx_income_v1"
+        ];
+
+        keys.forEach(k => localStorage.removeItem(k));
+
+        const box = document.getElementById("msgBox");
+        box.textContent = "✅ Demo data successfully cleared. এখন নতুন করে রেজিস্টার করতে পারবেন।";
+        box.className = "msg msg-ok";
+
+        // চাইলে একটু পরে register পেজে পাঠাতে পারি:
+        setTimeout(()=>{
+          window.location.href = "register-neon.html";
+        }, 2000);
+
+      }catch(e){
+        const box = document.getElementById("msgBox");
+        box.textContent = "❌ কোনো সমস্যা হয়েছে, একটু পরে আবার চেষ্টা করুন।";
+        box.className = "msg msg-bad";
+      }
+    }
+  </script>
+</body>
+</html>
