@@ -384,7 +384,7 @@
         <button class="btn-small" onclick="logout()">Logout</button>
         <button class="btn-outline-small menu-dot" id="menuToggle">⋮</button>
 
-        <!-- three-dot menu (পরে তুমি নাম বদলাবে) -->
+        <!-- three-dot menu -->
         <div class="menu-dropdown" id="menuDropdown">
           <button type="button">Profile (demo)</button>
           <button type="button">Packages (demo)</button>
@@ -485,17 +485,17 @@
             <button class="ref-btn" onclick="copyRefLink()">Copy Link</button>
           </div>
         </div>
-        <!--Ac data delete karar jonno-->
-        <div class="header-actions">
-       <button id="adminBtn" class="btn-outline-small" style="display:none;"
-          onclick="goAdmin()">Admin Panel</button>
-       <button class="btn-outline-small" onclick="goHome()">Home</button>
-       <button class="btn-outline-small" onclick="window.location.href='reset-demo.html'">
-        Clear Data
-         </button>
-       <button class="btn-small" onclick="logout()">Logout</button>
+
+        <!-- ACTION BUTTONS -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button class="btn-outline-small" onclick="window.location.href='deposit.html'">
+            Deposit
+          </button>
+          <button class="btn-outline-small" onclick="window.location.href='withdraw.html'">
+            Withdraw
+          </button>
         </div>
-        
+
         <!-- ACCOUNT INFO -->
         <div class="info-grid">
           <div class="info-card">
@@ -560,15 +560,26 @@
   </div>
 
   <script>
-    var STORAGE_CURRENT = "btx_current_user_v1";
+    const STORAGE_CURRENT = "btx_current_user_v1";
+    const STORAGE_USERS   = "btx_users_v1";
 
     function getCurrentUser(){
-      var raw = localStorage.getItem(STORAGE_CURRENT);
+      const raw = localStorage.getItem(STORAGE_CURRENT);
       if(!raw) return null;
       try{
         return JSON.parse(raw);
       }catch(e){
         return null;
+      }
+    }
+
+    function loadUsers(){
+      const raw = localStorage.getItem(STORAGE_USERS);
+      if(!raw) return [];
+      try{
+        return JSON.parse(raw);
+      }catch(e){
+        return [];
       }
     }
 
@@ -616,10 +627,19 @@
 
     // MAIN INIT
     (function initDashboard(){
-      var user = getCurrentUser();
+      let user = getCurrentUser();
       if(!user){
         window.location.href = "login.html";
         return;
+      }
+
+      // 👉 latest userdata নেয়া users list থেকে (admin panel থেকে যা আপডেট হয়েছে)
+      const allUsers = loadUsers();
+      const fromList = allUsers.find(u => u.username === user.username);
+      if(fromList){
+        user = fromList;
+        // current user-ও fresh data দিয়ে আপডেট করি
+        localStorage.setItem(STORAGE_CURRENT, JSON.stringify(user));
       }
 
       // Admin button
@@ -653,9 +673,14 @@
           '<span class="badge-role badge-member">● MEMBER ACCOUNT</span>';
       }
 
-      // Member status (পরে প্যাকেজ আপডেট করলে এখানে পরিবর্তন করব)
-      document.getElementById("memberStatus").textContent =
-        "Free Member (Demo)";
+      // Member status: free / premium from user.membershipType
+      var membership = user.membershipType || "free";
+      var statusEl = document.getElementById("memberStatus");
+      if(membership === "premium"){
+        statusEl.textContent = "Premium Member (Demo)";
+      }else{
+        statusEl.textContent = "Free Member (Demo)";
+      }
 
       // Small info
       document.getElementById("infoEmail").textContent =
@@ -694,17 +719,24 @@
         encodeURIComponent(uName || "");
       document.getElementById("myRefLink").value = refLink;
 
-      // ==== DEMO EARNING DATA ====
-      var selfInv      = 200;
-      var dailyROI     = selfInv * 0.012;  // 1.2% demo
-      var sponsorBonus = 60;
-      var genBonus     = 40;
-      var rankBonus    = 25;
-      var globalBonus  = 15;
-      var giftVoucher  = 10;
+      // ===== REAL DATA FROM USER (default 0) =====
+      // Self Investment = total deposit
+      var selfInv      = Number(user.depositTotal || 0);
+      // Current Balance = user.balance
+      var currentBal   = Number(user.balance || 0);
 
-      var totalEarning = dailyROI + sponsorBonus + genBonus + rankBonus + globalBonus + giftVoucher;
-      var currentBal   = selfInv + totalEarning;
+      // Income fields (future এ income-engine.js থেকে বাড়বে)
+      var sponsorBonus = Number(user.directIncome || 0);
+      var genBonus     = Number(user.teamIncome || 0);
+      var rankBonus    = Number(user.rankIncome || 0);
+      var globalBonus  = Number(user.globalIncome || 0);
+      var giftVoucher  = Number(user.giftIncome || 0);
+
+      // ROI এখন ডিফল্ট 0 (পরে তুমি চাইলে dailyROI / totalROI আলাদা ফিল্ড করব)
+      var dailyROI     = Number(user.dailyROI || 0);
+
+      var totalEarning =
+        sponsorBonus + genBonus + rankBonus + globalBonus + giftVoucher;
 
       // Summary text
       document.getElementById("sumSelf").textContent    = "$" + selfInv.toFixed(2);
@@ -746,14 +778,12 @@
       });
 
       // ===== CHART 2 – ROI Growth (30 days demo) =====
+      // এখন শুধুই flat line (0 বা currentBal) – পরে চাইলে সত্যিকারের history রাখব
       var days = [];
       var roiValues = [];
-      var balance = selfInv;
       for(var i=1;i<=30;i++){
-        var profit = balance * 0.012;
-        balance += profit;
         days.push(i.toString());
-        roiValues.push(balance.toFixed(2));
+        roiValues.push(currentBal.toFixed(2)); // same balance demo line
       }
 
       var ctx2 = document.getElementById("roiChart").getContext("2d");
@@ -778,7 +808,5 @@
 
     })();
   </script>
-  <script src="income-engine.js"></script>
-<script src="dashboard.js"></script>
 </body>
 </html>

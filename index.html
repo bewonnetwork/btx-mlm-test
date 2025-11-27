@@ -2,273 +2,302 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <title>BTX.ONE – Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BTX.ONE – MLM Demo</title>
-  <link rel="stylesheet" href="style.css" />
-  <script defer src="app.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+    body{
+      min-height:100vh;
+      background:radial-gradient(circle at top,#020617,#020617 60%);
+      color:#e5f0ff;
+    }
+    a{text-decoration:none;color:inherit}
+
+    .shell{
+      max-width:1100px;
+      margin:0 auto;
+      padding:16px;
+    }
+
+    /* HEADER / NAV */
+    .top-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .brand-logo{
+      width:52px;height:52px;border-radius:999px;
+      object-fit:cover;
+      box-shadow:0 0 24px rgba(59,130,246,.95);
+    }
+    .brand-title h1{
+      font-size:20px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+    }
+    .brand-title p{
+      font-size:11px;
+      color:#9ca3af;
+      margin-top:2px;
+    }
+    .nav-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .btn,
+    .btn-outline{
+      border-radius:999px;
+      padding:7px 16px;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      cursor:pointer;
+      border:none;
+    }
+    .btn{
+      background:linear-gradient(135deg,#38bdf8,#22c55e);
+      color:#020617;
+      box-shadow:0 14px 32px rgba(56,189,248,.85);
+    }
+    .btn-outline{
+      border:1px solid rgba(148,163,184,.7);
+      background:rgba(15,23,42,.9);
+      color:#e5e7eb;
+    }
+
+    /* MAIN CARD */
+    .hero-card{
+      position:relative;
+      border-radius:26px;
+      padding:24px 22px 22px;
+      background:linear-gradient(135deg,rgba(15,23,42,.98),rgba(30,64,175,.96));
+      box-shadow:
+        0 0 0 2px rgba(56,189,248,.7),
+        0 26px 70px rgba(0,0,0,.9);
+      overflow:hidden;
+      margin-bottom:18px;
+    }
+    .hero-glow{
+      position:absolute;inset:-90px;
+      background:
+        radial-gradient(circle at 0 0,rgba(56,189,248,.25),transparent 60%),
+        radial-gradient(circle at 100% 100%,rgba(74,222,128,.25),transparent 60%);
+      opacity:.9;pointer-events:none;
+    }
+    .hero-inner{position:relative;z-index:1;}
+
+    .hero-title{
+      font-size:24px;
+      margin-bottom:6px;
+    }
+    .hero-sub{
+      font-size:13px;
+      color:#cbd5f5;
+      margin-bottom:10px;
+    }
+    .hero-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:11px;
+      background:rgba(15,23,42,.9);
+      border:1px solid rgba(250,204,21,.8);
+      color:#facc15;
+      margin-bottom:10px;
+    }
+    .hero-cta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:8px;
+      margin-bottom:10px;
+    }
+    .hero-note{
+      font-size:11px;
+      color:#9ca3af;
+    }
+
+    /* 3 COLUMN INFO */
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px;
+      margin-bottom:18px;
+    }
+    .info-card{
+      border-radius:18px;
+      padding:12px 12px 10px;
+      background:rgba(15,23,42,.96);
+      box-shadow:0 0 0 1px rgba(148,163,184,.5);
+      font-size:12px;
+    }
+    .info-card h3{
+      font-size:14px;
+      margin-bottom:4px;
+    }
+    .tag{
+      display:inline-block;
+      margin-top:4px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:#a5b4fc;
+    }
+
+    /* HOW IT WORKS */
+    .how-wrap{
+      border-radius:18px;
+      padding:14px 14px 10px;
+      background:rgba(15,23,42,.96);
+      box-shadow:0 0 0 1px rgba(148,163,184,.5);
+      font-size:12px;
+      margin-bottom:12px;
+    }
+    .how-wrap h2{
+      font-size:15px;
+      margin-bottom:6px;
+    }
+    .steps{
+      list-style:none;
+      margin-top:4px;
+    }
+    .steps li{
+      margin-bottom:4px;
+    }
+    .steps span{
+      font-weight:600;
+      color:#38bdf8;
+    }
+
+    footer{
+      margin-top:8px;
+      font-size:10px;
+      color:#6b7280;
+      text-align:center;
+    }
+
+    @media(max-width:640px){
+      .shell{padding:12px;}
+      .top-header{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="shell">
 
-<!-- ================= NAVBAR ================= -->
-<header class="nav">
-  <div class="nav-left">
-    <div class="logo-3d"><span>BTX</span></div>
-    <div class="nav-title">
-      <h1>BTX.ONE</h1>
-      <p>USDT MLM Network</p>
-    </div>
-  </div>
-  <nav class="nav-menu">
-  <a href="#home">Home</a>
-  <a href="#packages">Packages</a>
-<a href="register-neon.html">Register</a>
-  <a href="dashboard.html">Dashboard</a>
-</nav>
-<a href="login.html" class="btn-outline">Login</a>
-</header>
-
-<!-- ================= HERO ================= -->
-<section id="home" class="hero">
-  <div class="hero-left">
-    <h2>Grow Your <span class="grad-text">USDT</span> With BTX.ONE</h2>
-    <p class="hero-sub">
-      Daily ROI 1% – 1.5%, 20 Level Generation Bonus, Weekly Global Pool & Rank System.
-    </p>
-
-    <div class="hero-stats">
-      <div class="stat-card">
-        <p>Total Members</p>
-        <h3 id="statMembers">0</h3>
-      </div>
-      <div class="stat-card">
-        <p>Total Deposit</p>
-        <h3 id="statDeposit">$0</h3>
-      </div>
-      <div class="stat-card">
-        <p>Total Payout</p>
-        <h3 id="statPayout">$0</h3>
-      </div>
-    </div>
-
-    <div class="hero-actions">
-      <button class="btn-primary">Get Started</button>
-      <button class="btn-glass">Watch Demo</button>
-    </div>
-  </div>
-
-  <div class="hero-right">
-    <div class="hero-card">
-      <div class="hero-card-header">
-        <span class="dot green"></span>
-        <span class="dot yellow"></span>
-        <span class="dot red"></span>
-      </div>
-      <h3>BTX.ONE Balance</h3>
-
-      <div class="hero-balance">
-        <p>Current Balance</p>
-        <h2 id="demoBalance">$1250.50</h2>
-      </div>
-
-      <div class="hero-mini-grid">
-        <div><p>Self Investment</p><h4 id="demoSelf">$500</h4></div>
-        <div><p>Daily ROI</p><h4 id="demoROI">$7.5</h4></div>
-        <div><p>Sponsor Bonus</p><h4 id="demoSponsor">$320</h4></div>
-        <div><p>Generation</p><h4 id="demoGen">$423</h4></div>
-      </div>
-
-      <button class="btn-secondary full">Open Member Panel</button>
-    </div>
-
-    <div class="floating-token"><span>USDT</span></div>
-  </div>
-</section>
-
-<!-- ================= REGISTER SECTION ================= -->
-<section id="register" class="reg-section">
-  <div class="reg-wrap">
-    <div class="reg-top">
-      <div class="reg-logo">
-        <div class="reg-logo-badge">BTX</div>
-        <div class="reg-logo-text">
-          <h2>BTX.ONE Registration</h2>
-          <p>USDT MLM Investment Platform</p>
+    <!-- HEADER / NAV -->
+    <header class="top-header">
+      <div class="brand">
+        <img src="images/logo.png" alt="BTX Logo" class="brand-logo" />
+        <div class="brand-title">
+          <h1>BTX.ONE</h1>
+          <p>USDT MLM • Member Platform (Demo)</p>
         </div>
       </div>
-      <div class="reg-top-info">
-        <div>Min Deposit: <strong>20 USDT</strong></div>
-        <div>Daily ROI: <strong>1% – 1.5%</strong></div>
-      </div>
-    </div>
+      <nav class="nav-actions">
+        <button class="btn-outline" onclick="window.location.href='index.html'">Home</button>
+        <button class="btn-outline" onclick="window.location.href='register-neon.html'">Register</button>
+        <button class="btn-outline" onclick="window.location.href='login.html'">Login</button>
+        <button class="btn" onclick="window.location.href='dashboard.html'">Member Area</button>
+      </nav>
+    </header>
 
-    <div class="reg-grid-main">
-      <!-- LEFT FORM -->
-      <div class="reg-card">
-        <h3>Create Your Account</h3>
-        <p class="reg-subtitle">Demo only – No data will be saved.</p>
+    <!-- HERO / COMPANY INFO -->
+    <section class="hero-card">
+      <div class="hero-glow"></div>
+      <div class="hero-inner">
+        <div class="hero-badge">
+          ⚠ Demo Project – Test & Learning Only
+        </div>
+        <h2 class="hero-title">BTX.ONE – USDT Based Smart Affiliate Platform</h2>
+        <p class="hero-sub">
+          BTX.ONE হচ্ছে একটা <strong>ডেমো USDT MLM / Affiliate</strong> সিস্টেম যেখানে তুমি
+          Registration, Login, Member Dashboard, Deposit & Withdraw Request – সবকিছু
+          front-end থেকে টেস্ট করতে পারবে। এখনো এখানে কোন Real Investment / Live Wallet
+          কানেক্ট নেই।
+        </p>
 
-        <div id="regMessage" class="reg-alert" style="display:none;"></div>
-
-        <form id="btxRegisterForm">
-          <div class="reg-form-grid">
-            <label>Full Name
-              <input type="text" name="full_name" required />
-            </label>
-            <label>Email
-              <input type="email" name="email" required />
-            </label>
-            <label>Mobile Number
-              <input type="text" name="mobile" required />
-            </label>
-            <label>Country Code
-              <input type="text" name="country_code" required />
-            </label>
-            <label>Username
-              <input type="text" name="username" required />
-            </label>
-            <label>Referral Code
-              <input type="text" name="referral_code" />
-            </label>
-            <label>Sponsor Username
-              <input type="text" name="sponsor_username" />
-            </label>
-            <label>Date of Birth
-              <input type="date" name="dob" required />
-            </label>
-            <label>Address
-              <input type="text" name="address" required />
-            </label>
-          </div>
-
-          <div class="reg-form-grid">
-            <label>Password
-              <input type="password" name="password" required />
-            </label>
-            <label>Confirm Password
-              <input type="password" name="password_confirm" required />
-            </label>
-            <label>Transaction PIN (4 digit)
-              <input type="password" name="tx_pin" maxlength="4" required />
-            </label>
-          </div>
-
-          <label class="reg-terms">
-            <input type="checkbox" required /> I agree to Terms
-          </label>
-
-          <button type="submit" class="btn-primary reg-btn">
-            Register Now (Demo)
+        <div class="hero-cta">
+          <button class="btn" onclick="window.location.href='register-neon.html'">
+            ➜ Free Registration
           </button>
-        </form>
+          <button class="btn-outline" onclick="window.location.href='login.html'">
+            Already Member? Login
+          </button>
+        </div>
+
+        <p class="hero-note">
+          ভবিষ্যতে এই প্ল্যাটফর্মে আমরা <strong>Smart Income Engine, Live Wallet Connect,
+          USDT Deposit / Withdraw, Generation Bonus, Global Pool</strong> ইত্যাদি
+          ধীরে ধীরে যুক্ত করব – সব কিছু প্রথমে Localhost / Test মোডে।
+        </p>
       </div>
+    </section>
 
-      <!-- RIGHT INFO -->
-      <div class="reg-card reg-card-right">
-        <h4>Plan Highlights</h4>
-        <ul>
-          <li>Daily ROI: 1% – 1.5%</li>
-          <li>Direct Sponsor: 5%</li>
-          <li>Generation 20 Level</li>
-          <li>Weekly Global Bonus</li>
-        </ul>
+    <!-- 3 MAIN HIGHLIGHTS -->
+    <section class="info-grid">
+      <article class="info-card">
+        <h3>Secure Member Area</h3>
+        <p>
+          প্রত্যেক ইউজারের জন্য আলাদা <strong>Dashboard</strong> – যেখানে Balance, Self
+          Investment, Sponsor Income, Generation Bonus ইত্যাদি Future এ দেখানো হবে।
+        </p>
+        <span class="tag">Member Dashboard</span>
+      </article>
 
-        <h4>About This Form</h4>
-        <ul>
-          <li>Demo only</li>
-          <li>Not connected to any database</li>
-          <li>Best for Netlify Frontend Testing</li>
-        </ul>
-      </div>
-    </div>
+      <article class="info-card">
+        <h3>Smart Affiliate & Generation Plan</h3>
+        <p>
+          Sponsor Bonus, 20 Level Generation Bonus, Rank Bonus, Global Pool ইত্যাদি
+          আমরা ধীরে ধীরে Smart Income Engine এর মাধ্যমে হিসাব করব (Demo Calculation
+          already পরিকল্পনা করা আছে)।
+        </p>
+        <span class="tag">MLM / Affiliate</span>
+      </article>
+
+      <article class="info-card">
+        <h3>USDT Based Future Integration</h3>
+        <p>
+          ভবিষ্যতে BTX.ONE কে <strong>USDT / Crypto Wallet</strong> এর সাথে কানেক্ট করা হবে –
+          যেমন MetaMask / Tron / অন্য কোন Network – কিন্তু সব কিছু আগে Paper Plan ও
+          Localhost Test করে তারপর লাইভ করা হবে।
+        </p>
+        <span class="tag">USDT Focused</span>
+      </article>
+    </section>
+
+    <!-- HOW IT WORKS / SIMPLE FLOW -->
+    <section class="how-wrap">
+      <h2>কিভাবে ব্যবহার করবে (Demo Version)</h2>
+      <ul class="steps">
+        <li><span>1.</span> প্রথমে উপরের <strong>Free Registration</strong> বাটনে ক্লিক করে নতুন ID খুলে নাও।</li>
+        <li><span>2.</span> তারপর <strong>Login</strong> করে Member Dashboard এ গিয়ে Design ও Flow টেস্ট করো।</li>
+        <li><span>3.</span> Admin Panel থেকে তোমার Demo ডাটা (Deposit / Withdraw / Balance) ম্যানুয়ালি সেট হবে।</li>
+      </ul>
+      <p class="hero-note" style="margin-top:6px;">
+        👉 এই পেজে কোন Registration Form বা Real Transaction নেই – শুধু কোম্পানির
+        basic information ও Demo flow introduce করার জন্য।
+      </p>
+    </section>
+
+    <footer>
+      © <span id="year"></span> BTX.ONE • Demo USDT MLM Learning Project – All Rights Reserved.
+    </footer>
   </div>
-</section>
 
-<!-- ================= PACKAGES ================= -->
-<section id="packages" class="section dark">
-  <h2 class="section-title">Investment Packages</h2>
-  <p class="section-sub">Simple packages for testing frontend logic.</p>
-
-  <div class="card-grid">
-    <article class="card-3d">
-      <h3>$20 Starter</h3>
-      <ul>
-        <li>ROI 1% – 1.2%</li>
-        <li>Sponsor 5%</li>
-      </ul>
-      <button class="btn-secondary buy-btn" data-amount="20">$20 Deposit</button>
-    </article>
-
-    <article class="card-3d card-pop">
-      <span class="tag">POPULAR</span>
-      <h3>$100 Pro</h3>
-      <ul>
-        <li>ROI 1.2% – 1.4%</li>
-        <li>Team Income Boost</li>
-      </ul>
-      <button class="btn-secondary buy-btn" data-amount="100">$100 Deposit</button>
-    </article>
-
-    <article class="card-3d">
-      <h3>$500 Elite</h3>
-      <ul>
-        <li>ROI 1.4% – 1.5%</li>
-        <li>Full Rank Eligible</li>
-      </ul>
-      <button class="btn-secondary buy-btn" data-amount="500">$500 Deposit</button>
-    </article>
-  </div>
-</section>
-
-<!-- ================= DASHBOARD ================= -->
-<section id="dashboard" class="section">
-  <h2 class="section-title">Dashboard (Demo)</h2>
-
-  <div class="dash-layout">
-    <aside class="dash-sidebar">
-      <h3>BTX Panel</h3>
-      <ul>
-        <li class="active">Overview</li>
-        <li>Investments</li>
-        <li>Team</li>
-        <li>Income</li>
-      </ul>
-    </aside>
-
-    <main class="dash-main">
-      <div class="dash-cards">
-        <div class="dash-card">
-          <p>Current Balance</p>
-          <h3 id="dbBalance">$0</h3>
-        </div>
-        <div class="dash-card">
-          <p>Total Deposit</p>
-          <h3 id="dbDeposit">$0</h3>
-        </div>
-        <div class="dash-card">
-          <p>Total Income</p>
-          <h3 id="dbIncome">$0</h3>
-        </div>
-        <div class="dash-card">
-          <p>Team Members</p>
-          <h3 id="dbTeam">0</h3>
-        </div>
-      </div>
-
-      <h4 class="table-title">Recent Deposit</h4>
-      <table class="table">
-        <thead>
-          <tr><th>Member</th><th>Package</th><th>Amount</th><th>Date</th></tr>
-        </thead>
-        <tbody id="dbTableBody"></tbody>
-      </table>
-    </main>
-  </div>
-</section>
-
-<footer class="footer">
-  <p>© 2025 BTX.ONE Demo – Only Frontend.</p>
-</footer>
-
+  <script>
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

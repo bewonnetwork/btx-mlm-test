@@ -69,12 +69,21 @@
     }
     .rn-inner{position:relative;z-index:1;}
 
-    .rn-title{text-align:center;margin-bottom:18px;}
+    .rn-title{
+      text-align:center;
+      margin-bottom:18px;
+    }
     .rn-title h1{
       font-size:24px;
       letter-spacing:.28em;
       text-transform:uppercase;
       color:#facc15;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .reg-icon{
+      font-size:20px;
     }
 
     .rn-form{
@@ -167,16 +176,13 @@
       box-shadow:0 24px 65px rgba(0,0,0,1);
     }
 
-    /* নিচের REGISTER ব্লক */
+    /* নিচের Login ব্লক – এখন শুধু টেক্সট */
     .rn-bottom{
       margin-top:12px;
       text-align:center;
       font-size:11px;
-      background:#000000;
-      color:#facc15;
-      padding:7px 12px;
-      border-radius:999px;
-      border:1px solid #facc15;
+      color:#e5e7eb;
+      padding:6px 0;
     }
     .rn-bottom a{
       color:#facc15;
@@ -213,7 +219,7 @@
     <div class="rn-inner">
 
       <div class="rn-title">
-        <h1>REGISTER</h1>
+        <h1><span class="reg-icon">📝</span>REGISTER</h1>
       </div>
 
       <form id="registerForm" class="rn-form">
@@ -484,7 +490,8 @@
       }
     }
 
-    const role = users.length === 0 ? "admin" : "member";
+    // ❌ আর auto admin না – সবাই member
+    const role = "member";
 
     const newUser = {
       id: Date.now(),
@@ -497,6 +504,9 @@
       sponsor_username: sponsorUser ? sponsorUser.username : "",
       password: pass1,
       role,
+      // 🔹 নতুন ফিল্ড – শুরুতে সবাই ফ্রি
+      membershipType: "free",
+
       balance: 0,
       depositTotal: 0,
       directIncome: 0,
