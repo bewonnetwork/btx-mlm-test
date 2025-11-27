@@ -424,14 +424,14 @@
         <!-- SUMMARY CARDS -->
         <div class="summary-grid">
           <div class="summary-card">
-            <p>Current Balance (Demo)</p>
+            <p>Current Balance</p>
             <h3 id="sumBalance">$0.00</h3>
-            <div class="summary-tag">সব income মিলিয়ে</div>
+            <div class="summary-tag">live from account</div>
           </div>
           <div class="summary-card">
             <p>Self Investment</p>
             <h3 id="sumSelf">$0.00</h3>
-            <div class="summary-tag">নিজের প্যাকেজ</div>
+            <div class="summary-tag">Total Deposit</div>
           </div>
           <div class="summary-card">
             <p>Daily Profit (ROI)</p>
@@ -488,13 +488,16 @@
 
         <!-- ACTION BUTTONS -->
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-          <button class="btn-outline-small" onclick="window.location.href='deposit.html'">
-            Deposit
-          </button>
-          <button class="btn-outline-small" onclick="window.location.href='withdraw.html'">
-            Withdraw
-          </button>
-        </div>
+         <button class="btn-outline-small" onclick="window.location.href='deposit.html'">
+           Deposit
+             </button>
+                 <button class="btn-outline-small" onclick="window.location.href='upgrade.html'">
+                Upgrade / Invest
+                </button>
+               <button class="btn-outline-small" onclick="window.location.href='withdraw.html'">
+               Withdraw
+             </button>
+          </div>
 
         <!-- ACCOUNT INFO -->
         <div class="info-grid">
@@ -560,11 +563,11 @@
   </div>
 
   <script>
-    const STORAGE_CURRENT = "btx_current_user_v1";
-    const STORAGE_USERS   = "btx_users_v1";
+    var STORAGE_CURRENT = "btx_current_user_v1";
+    var STORAGE_USERS   = "btx_users_v1";
 
     function getCurrentUser(){
-      const raw = localStorage.getItem(STORAGE_CURRENT);
+      var raw = localStorage.getItem(STORAGE_CURRENT);
       if(!raw) return null;
       try{
         return JSON.parse(raw);
@@ -574,13 +577,9 @@
     }
 
     function loadUsers(){
-      const raw = localStorage.getItem(STORAGE_USERS);
+      var raw = localStorage.getItem(STORAGE_USERS);
       if(!raw) return [];
-      try{
-        return JSON.parse(raw);
-      }catch(e){
-        return [];
-      }
+      try{return JSON.parse(raw);}catch(e){return [];}
     }
 
     function logout(){
@@ -627,19 +626,10 @@
 
     // MAIN INIT
     (function initDashboard(){
-      let user = getCurrentUser();
+      var user = getCurrentUser();
       if(!user){
         window.location.href = "login.html";
         return;
-      }
-
-      // 👉 latest userdata নেয়া users list থেকে (admin panel থেকে যা আপডেট হয়েছে)
-      const allUsers = loadUsers();
-      const fromList = allUsers.find(u => u.username === user.username);
-      if(fromList){
-        user = fromList;
-        // current user-ও fresh data দিয়ে আপডেট করি
-        localStorage.setItem(STORAGE_CURRENT, JSON.stringify(user));
       }
 
       // Admin button
@@ -719,24 +709,19 @@
         encodeURIComponent(uName || "");
       document.getElementById("myRefLink").value = refLink;
 
-      // ===== REAL DATA FROM USER (default 0) =====
-      // Self Investment = total deposit
-      var selfInv      = Number(user.depositTotal || 0);
-      // Current Balance = user.balance
-      var currentBal   = Number(user.balance || 0);
+      // ==== REAL DATA FROM USER OBJECT ====
+      var selfInv      = user.depositTotal   || 0; // সব deposit টোটাল
+      var sponsorBonus = user.directIncome   || 0;
+      var genBonus     = user.teamIncome     || 0;
+      var rankBonus    = user.rankIncome     || 0;
+      var globalBonus  = user.globalIncome   || 0;
+      var giftVoucher  = user.giftVoucher    || 0;
 
-      // Income fields (future এ income-engine.js থেকে বাড়বে)
-      var sponsorBonus = Number(user.directIncome || 0);
-      var genBonus     = Number(user.teamIncome || 0);
-      var rankBonus    = Number(user.rankIncome || 0);
-      var globalBonus  = Number(user.globalIncome || 0);
-      var giftVoucher  = Number(user.giftIncome || 0);
+      // এখনো ROI ক্যালকুলেশন বানাইনি, তাই 0
+      var dailyROI     = user.dailyROI       || 0;
 
-      // ROI এখন ডিফল্ট 0 (পরে তুমি চাইলে dailyROI / totalROI আলাদা ফিল্ড করব)
-      var dailyROI     = Number(user.dailyROI || 0);
-
-      var totalEarning =
-        sponsorBonus + genBonus + rankBonus + globalBonus + giftVoucher;
+      var totalEarning = sponsorBonus + genBonus + rankBonus + globalBonus + giftVoucher + dailyROI;
+      var currentBal   = user.balance || 0;  // Admin/deposit থেকে update হওয়া balance
 
       // Summary text
       document.getElementById("sumSelf").textContent    = "$" + selfInv.toFixed(2);
@@ -777,13 +762,15 @@
         }
       });
 
-      // ===== CHART 2 – ROI Growth (30 days demo) =====
-      // এখন শুধুই flat line (0 বা currentBal) – পরে চাইলে সত্যিকারের history রাখব
+      // ===== CHART 2 – ROI Growth (30 days demo – still simple) =====
       var days = [];
       var roiValues = [];
+      var balanceSim = currentBal;
       for(var i=1;i<=30;i++){
+        var profit = 0; // পরে income-engine বানালে এখানে আসল ROI বসাবো
+        balanceSim += profit;
         days.push(i.toString());
-        roiValues.push(currentBal.toFixed(2)); // same balance demo line
+        roiValues.push(balanceSim.toFixed(2));
       }
 
       var ctx2 = document.getElementById("roiChart").getContext("2d");
